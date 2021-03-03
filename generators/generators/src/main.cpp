@@ -1,4 +1,4 @@
-#include "number_of_gpus.hpp"
+#include "main.hpp"
 
 
 
@@ -72,7 +72,9 @@ int main (int argc, const char * argv[])
             vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
             return devices;
       }();
-      output_file << "constexpr int GPU_COUNT = " << physicalDevices.size() << ";\n";
+//      output_file << "constexpr int GPU_COUNT = " << physicalDevices.size() << ";\n";
+      output_file << "#define GPU_COUNT " << physicalDevices.size() << "\n";
+
       auto getPhysicalDeviceProperties = [](VkPhysicalDevice const& physicalDevice) {
             VkPhysicalDeviceProperties properties;
             vkGetPhysicalDeviceProperties(physicalDevice, &properties);
@@ -103,6 +105,8 @@ int main (int argc, const char * argv[])
             VkPhysicalDeviceLimits limits = props.limits;
             auto _int = to_string (nr_of_gpus);
             output_file << "constexpr uint32_t GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D = " <<  limits.maxImageDimension1D << ";\n";
+//            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.maxImageDimension1D << "\n";
+
             ++nr_of_gpus;
       }
       

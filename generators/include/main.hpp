@@ -36,6 +36,12 @@
 #include <boost/preprocessor/comparison/not_equal.hpp>
 #include <boost/preprocessor/repetition/for.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
+#include <boost/preprocessor/repetition.hpp>
+#include <boost/preprocessor/arithmetic/sub.hpp>
+#include <boost/preprocessor/punctuation/comma_if.hpp>
+#include <boost/preprocessor/control/if.hpp>
+#include <boost/preprocessor/facilities/empty.hpp>
+#include <boost/preprocessor/facilities/identity.hpp>
 
 using namespace std;
 
@@ -44,8 +50,7 @@ using namespace std;
 #define STR(x) STR_HELPER(x)
 #define STRINGIZE(...) #__VA_ARGS__
 
-#define CAT2(x, y) x##y
-#define CAT(x, y) CAT2(x, y)
+
 
 #include <filesystem>
 //#define N \n

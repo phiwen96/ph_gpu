@@ -1,4 +1,4 @@
-#include "graphics.hpp"
+#include "main.hpp"
 
 
 
@@ -45,28 +45,100 @@ res += i;\
 
 #define PROCC(x) PROCC2 (BOOST_PP_STRINGIZE (BOOST_PP_SEQ_ELEM (0, x)), BOOST_PP_SEQ_ELEM (1, x), BOOST_PP_SEQ_ELEM (2, x))//BOOST_PP_SEQ_ELEM (2, x) = [](string s){ \
 
+//#define CAT_MID(x, y, z) BOOST_PP_CAT (x, BOOST_PP_CAT (y, z))
+
+#define TINY_size(z, n, unused) \
+template <> \
+struct gpu <n> \
+{ \
+static constexpr uint32_t max_image_dimension_1D = 0;\
+};
+//= CAT_MID (GPU_, n, _MAX_IMAGE_DIMENSION_1D;) \
+
+
+#define PRED(r, state) \
+BOOST_PP_NOT_EQUAL ( \
+BOOST_PP_TUPLE_ELEM (2, 0, state), \
+BOOST_PP_INC (BOOST_PP_TUPLE_ELEM (2, 1, state)) \
+) \
+/**/
+
+#define OP(r, state) \
+( \
+BOOST_PP_INC (BOOST_PP_TUPLE_ELEM (2, 0, state)), \
+BOOST_PP_TUPLE_ELEM (2, 1, state) \
+) \
+/**/
+
+#define CAT_MID (x) BOOST_PP_CAT (BOOST_PP_CAT (x, BOOST_PP_CAT (y, z))
+
+#define MACRO5(n) \
+template <> \
+struct gpu <n> \
+{ \
+static constexpr uint32_t max_image_dimension_1D =  BOOST_PP_CAT (GPU_, n);\
+};
+
+#define MACRO4(r, state) MACRO5 (BOOST_BOOST_PP_TUPLE_ELEM (2, 0, state))
+#include "gpu_gen_definitions.hpp"
+
+
+#define MACRO6(z, n, text) \
+struct gpu <n> \
+{ \
+static constexpr uint32_t max_image_dimension_1D =  BOOST_PP_CAT (GPU_, n);\
+};
+
+
+#define CAT(x) BOOST_PP_SEQ_CAT (x)
+
+
+#define DECL(z, n, text) \
+struct gpu <n> \
+{ \
+static constexpr uint32_t max_image_dimension_1D =  CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D));\
+};
 
 
 
 
-
-
+// cout << BOOST_PP_STRINGIZE(BOOST_PP_FOR((5, 10, kiss), PRED, OP, MACRO4)) << endl; // expands to 5 6 7 8 9 10)
 int main (int argc, const char * argv[])
 {
-//      string const generate_header_file = string (argv [1]) + ".hpp";
-//      string const generate_source_file = string (argv [1]) + ".cpp";
+      cout << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(5, DECL, int x)) << endl;
 
-//      PROCC((
-//             template <>
-//             struct gpu <${i}>
-//             {
-//            static constexpr int fitta = GPU_COUNT;
-//            static constexpr int count = GPU_COUNT;
-//            static constexpr uint32_t max_image_dimension_1D = GPU_${i}_MAX_IMAGE_DIMENSION_1D;
-//      };
-//
-//             )(1)
-//            (string gpu_class_header))
+      
+//       cout << BOOST_PP_STRINGIZE (BOOST_PP_FOR ((0, BOOST_PP_DEC (GPU_COUNT), kiss), PRED, OP, MACRO4)) << endl; // expands to 5 6 7 8 9 10)
+
+      return 0;
+//      BOOST_PP_REPEAT
+//      BOOST_PP_REA
+//      BOOST_PP_REPEAT (GPU_COUNT, TINY_size, ~)
+      
+      file <write> header (argv [1]);
+      header << "#pragma once \n";
+      header << "#include <iostream>\n";
+      
+      header << "namespace{\n";
+      header << readFileIntoString (GENERATED_INCLUDE_FILE);
+      header << "}\n";
+      
+      PROCC((
+             template <int>                                                                                                   \n
+             struct gpu;                                                                                                   \n\n
+             
+             template <>                                                                                                         \n
+             struct gpu <${i}>                                                                                                   \n
+             {                                                                                                   \n\t
+            static constexpr int fitta = GPU_COUNT;                                                                                                   \n\t
+            static constexpr int count = GPU_COUNT;                                                                                                   \n\t
+            static constexpr uint32_t max_image_dimension_1D = GPU_${i}_MAX_IMAGE_DIMENSION_1D;                                                                                                   \n
+      };\n
+
+             )(GPU_COUNT)
+            (string gpu_class_header))
+      
+      header << gpu_class_header;
       
       
 //      PROCC((
@@ -102,18 +174,7 @@ int main (int argc, const char * argv[])
 //      source << readFileIntoString (GENERATED_INCLUDE_FILE);
 //      source << gpu_class_source;
       
-      file <write> header (argv [1]);
-      header << "#pragma once \n";
-      header << "#include <iostream>\n";
-
-      header << "namespace{\n";
-      header << "#define YES 1\n";
-      header << "#if defined YES\n";
-      header << readFileIntoString (GENERATED_INCLUDE_FILE);
-      header << "#endif\n";
-      header << "#undef YES\n";
-      header << "}\n";
-      header << "template <int>struct gpu;";
+      
 //      header << gpu_class_header;
       
       
