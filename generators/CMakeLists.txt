@@ -20,12 +20,19 @@ file(GLOB_RECURSE SOURCE_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_executable (graphics_generator ${SOURCE_LIST} ${HEADER_LIST})
 
 # add_custom_command (
+# 		# OUTPUT
+# 		#  ${gpus_info_generator_BINARY_DIR}/generated/generated.hpp
+# 		TARGET graphics_generator
+# 		PRE_BUILD
+# 		COMMAND $<TARGET_FILE:gpus_info_generator> ${CMAKE_CURRENT_BINARY_DIR}/generated.hpp)
+
+# add_custom_command (
 # # OUTPUT
 # #  ${gpus_info_generator_BINARY_DIR}/generated/gpus_info.hpp
 # TARGET graphics_generator
 # PRE_BUILD
 # COMMAND $<TARGET_FILE:gpus_info_generator> ${CMAKE_CURRENT_BINARY_DIR}/generated/generated.hpp)
-generate (graphics_generator ${CMAKE_CURRENT_BINARY_DIR}/gpu_info.hpp)
+generate (graphics_generator ${CMAKE_CURRENT_BINARY_DIR}/generated.hpp)
 
 # target_sources (graphics_generator PRIVATE ${gpus_info_generator_BINARY_DIR}/generated/generated.hpp)
 
@@ -36,7 +43,7 @@ generate (graphics_generator ${CMAKE_CURRENT_BINARY_DIR}/gpu_info.hpp)
 # 	COMMAND $<TARGET_FILE:graphics_generator> ${graphics_generator_BINARY_DIR}/generated/graphics_info.hpp)
 
 
-target_compile_definitions (graphics_generator PRIVATE GENERATED_INCLUDE_FILE="${CMAKE_CURRENT_BINARY_DIR}/gpus_info.hpp")
+target_compile_definitions (graphics_generator PRIVATE GENERATED_INCLUDE_FILE="${CMAKE_CURRENT_BINARY_DIR}/generated.hpp")
 
 
 
@@ -55,8 +62,7 @@ target_compile_definitions (graphics_generator PRIVATE GENERATED_INCLUDE_FILE="$
 # )
 
 target_link_libraries(graphics_generator
-	PUBLIC 
-	${CMAKE_CURRENT_BINARY_DIR}/generated
+PRIVATE 
 	# /Users/pw/vulkansdk/macOS/lib/libvulkan.1.2.162.dylib 
 	/Users/pw/vulkansdk/MoltenVK/dylib/macOS/libMoltenVK.dylib 
 	/Users/pw/vulkansdk/macOS/lib/libVkLayer_khronos_validation.dylib
@@ -64,7 +70,7 @@ target_link_libraries(graphics_generator
 	glfw
 )
 
-target_include_directories(graphics_generator PUBLIC 
+target_include_directories(graphics_generator PRIVATE 
 	# /Users/pw/vulkansdk/macOS/include
 	include
 	/Users/pw/vulkansdk/MoltenVK/include 
@@ -116,3 +122,12 @@ target_include_directories(graphics_generator PUBLIC
 # # Error on failure and print error message:
 # MESSAGE(FATAL_ERROR "Failed check!")
 # ENDIF()
+
+function(generate target file)
+	add_custom_command (
+		# OUTPUT
+		#  ${gpus_info_generator_BINARY_DIR}/generated/generated.hpp
+		TARGET ${target}
+		PRE_BUILD
+		COMMAND $<TARGET_FILE:graphics_generator> ${file})
+endfunction()

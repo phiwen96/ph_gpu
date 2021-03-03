@@ -147,7 +147,7 @@ struct file <write>
 
 #include <ostream>
 #include <type_traits>
-#include <gpu_info.hpp>
+#include <generated.hpp>
 //#include <generated.hpp>
 
 string readFileIntoString(const string& path) {

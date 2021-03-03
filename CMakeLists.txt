@@ -8,7 +8,7 @@ project (
 
 
 file (GLOB_RECURSE HEADER_LIST include/*.hpp)
-file (GLOB_RECURSE SOURCE_LIST src/*.cpp)
+file (GLOB SOURCE_LIST src/*.cpp)
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	set (CMAKE_CXX_STANDARD 20)
@@ -24,9 +24,21 @@ endif()
 
 add_subdirectory(generators)
 
-add_library (ph_gpu)
+add_library (ph_gpu ${SOURCE_LIST} ${HEADER_LIST})
 
-target_sources (ph_gpu PRIVATE ${SOURCE_LIST} ${HEADER_LIST})
+# add_custom_command (
+# 		# OUTPUT
+# 		#  ${gpus_info_generator_BINARY_DIR}/generated/generated.hpp
+# 		TARGET ph_gpu
+# 		PRE_BUILD
+# 		COMMAND $<TARGET_FILE:graphics_generator> ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/gpu.hpp)
+
+generate (ph_gpu ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/gpu.hpp)
+
+
+
+# target_sources (ph_gpu PRIVATE ${SOURCE_LIST} ${HEADER_LIST})
+# target_sources (ph_gpu PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/gpu.hpp)
 
 # add_custom_command (
 # # OUTPUT
@@ -36,13 +48,14 @@ target_sources (ph_gpu PRIVATE ${SOURCE_LIST} ${HEADER_LIST})
 # COMMAND $<TARGET_FILE:graphics_generator> ${CMAKE_CURRENT_BINARY_DIR}/generated/generated.hpp)
 
 target_include_directories (ph_gpu PUBLIC include)
-target_include_directories (ph_gpu PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories (ph_gpu PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 
 
 
-if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING)
-	add_subdirectory (tests)
-endif()
+# if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING)
+# 	add_subdirectory (tests)
+# endif()
 
 
+add_subdirectory(apps)
