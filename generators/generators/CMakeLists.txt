@@ -4,9 +4,13 @@ set (gpus_info_generator_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 file(GLOB_RECURSE HEADER_LIST include/*.hpp)
 file(GLOB_RECURSE SOURCE_LIST src/*.cpp)
 
-add_executable (gpus_info_generator)
 
-target_sources (gpus_info_generator PRIVATE ${SOURCE_LIST} ${HEADER_LIST})
+
+add_executable (gpu_gen_definitions)
+
+set_target_properties (gpu_gen_definitions PROPERTIES FOLDER "ph_gpu/Generators/gpu_generate_class/Generators")
+
+target_sources (gpu_gen_definitions PRIVATE ${SOURCE_LIST} ${HEADER_LIST})
 
 
 
@@ -16,7 +20,7 @@ add_custom_command (
 	#  ${gpus_info_generator_BINARY_DIR}/generated/generated.hpp
 	TARGET ${target}
 	PRE_BUILD
-	COMMAND $<TARGET_FILE:gpus_info_generator> ${file})
+	COMMAND $<TARGET_FILE:gpu_gen_definitions> ${file})
 endfunction()
 
 
@@ -27,7 +31,7 @@ endfunction()
 # PRE_BUILD
 # COMMAND $<TARGET_FILE:gpus_info_generator> ${gpus_info_generator_BINARY_DIR}/generated/generated.hpp)
 
-target_link_libraries(gpus_info_generator
+target_link_libraries(gpu_gen_definitions
 PRIVATE 
 /Users/pw/vulkansdk/MoltenVK/dylib/macOS/libMoltenVK.dylib 
 /Users/pw/vulkansdk/macOS/lib/libVkLayer_khronos_validation.dylib
@@ -35,7 +39,7 @@ PRIVATE
 glfw
 )
 
-target_include_directories(gpus_info_generator PRIVATE 
+target_include_directories(gpu_gen_definitions PRIVATE 
 include
 # /Users/pw/vulkansdk/macOS/include
 /Users/pw/vulkansdk/MoltenVK/include 

@@ -107,7 +107,11 @@ int main (int argc, const char * argv[])
       header << "#include <iostream>\n";
 
       header << "namespace{\n";
+      header << "#define YES 1\n";
+      header << "#if defined YES\n";
       header << readFileIntoString (GENERATED_INCLUDE_FILE);
+      header << "#endif\n";
+      header << "#undef YES\n";
       header << "}\n";
       header << "template <int>struct gpu;";
 //      header << gpu_class_header;
