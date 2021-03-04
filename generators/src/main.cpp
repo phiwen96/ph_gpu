@@ -96,6 +96,7 @@ static constexpr uint32_t max_image_dimension_1D =  BOOST_PP_CAT (GPU_, n);\
 #define TB \t
 
 #define DECL(z, n, text) \
+template <> NL \
 struct gpu <n> NL \
 { NL \
 TB struct features NL \
@@ -155,12 +156,12 @@ TB TB static constexpr uint32_t    sparseResidency16Samples = CAT ((GPU_) (n) (_
 TB TB static constexpr uint32_t    sparseResidencyAliased = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_ALIASED)); NL \
 TB TB static constexpr uint32_t    variableMultisampleRate = CAT ((GPU_) (n) (_VARIABLE_MULTISAMPLE_RATE)); NL \
 TB TB static constexpr uint32_t    inheritedQueries = CAT ((GPU_) (n) (_INHERITED_QUERIES)); NL \
-TB } NL NL \
+TB }; NL NL \
 \
 \
 TB struct properties NL \
 TB { NL \
-TB TB limits NL \
+TB TB struct limits NL \
 TB TB { NL \
 TB TB TB static constexpr uint32_t max_image_dimension_1D =  CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
 TB TB TB static constexpr uint32_t              maxImageDimension2D = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
@@ -226,7 +227,7 @@ TB TB TB static constexpr float                 maxSamplerLodBias = CAT ((GPU_) 
 TB TB TB static constexpr float                 maxSamplerAnisotropy = CAT ((GPU_) (n) (_MAX_SAMPLER_ANISOTROPY));  NL \
 TB TB TB static constexpr uint32_t              maxViewports = CAT ((GPU_) (n) (_MAX_VIEWPORTS));  NL \
 TB TB TB static constexpr uint32_t              maxViewportDimensions[2] = {CAT ((GPU_) (n) (_MAX_VIEWPORT_DIMENSIONS_0)), CAT ((GPU_) (n) (_MAX_VIEWPORT_DIMENSIONS_1))};  NL \
-TB TB TB static constexpr uint32_t              viewportBoundsRange[2] = {CAT ((GPU_) (n) (_VIEWPORT_BOUNDS_RANGE_0)), CAT ((GPU_) (n) (_VIEWPORT_BOUNDS_RANGE_1))};  NL \
+TB TB TB static constexpr float              viewportBoundsRange[2] = {CAT ((GPU_) (n) (_VIEWPORT_BOUNDS_RANGE_0)), CAT ((GPU_) (n) (_VIEWPORT_BOUNDS_RANGE_1))};  NL \
 TB TB TB static constexpr uint32_t              viewportSubPixelBits = CAT ((GPU_) (n) (_VIEWPORT_SUB_PIXEL_BITS));  NL \
 TB TB TB static constexpr size_t                minMemoryMapAlignment = CAT ((GPU_) (n) (_MIN_MEMORY_MAP_ALIGNMENT));  NL \
 TB TB TB static constexpr uint64_t          minTexelBufferOffsetAlignment = CAT ((GPU_) (n) (_MIN_TEXEL_BUFFER_OFFSET_ALIGNMENT));  NL \
@@ -281,9 +282,13 @@ TB }; NL \
 // cout << BOOST_PP_STRINGIZE(BOOST_PP_FOR((5, 10, kiss), PRED, OP, MACRO4)) << endl; // expands to 5 6 7 8 9 10)
 int main (int argc, const char * argv[])
 {
+      file <write> header (argv [1]);
+      header << "#pragma once \n";
+      header << "#include <iostream>\n";
+      header << "template <int>\nstruct gpu;\n\n";
+      header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(1, DECL, int x));
       
-      
-      cout << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(1, DECL, int x)) << endl;
+//      cout << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(1, DECL, int x)) << endl;
       
       
 //       cout << BOOST_PP_STRINGIZE (BOOST_PP_FOR ((0, BOOST_PP_DEC (GPU_COUNT), kiss), PRED, OP, MACRO4)) << endl; // expands to 5 6 7 8 9 10)
@@ -293,9 +298,8 @@ int main (int argc, const char * argv[])
 //      BOOST_PP_REA
 //      BOOST_PP_REPEAT (GPU_COUNT, TINY_size, ~)
       
-      file <write> header (argv [1]);
-      header << "#pragma once \n";
-      header << "#include <iostream>\n";
+      
+      
       
       header << "namespace{\n";
       header << readFileIntoString (GENERATED_INCLUDE_FILE);

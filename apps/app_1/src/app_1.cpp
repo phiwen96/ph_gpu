@@ -5,7 +5,8 @@ using namespace std;
 
 int main ()
 {
-      cout << GPU_COUNT << endl;
+      
+//      cout << GPU_COUNT << endl;
       cout << "hi" << endl;
       return 0;
 }
