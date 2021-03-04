@@ -1,59 +1,15 @@
 #include "main.hpp"
-
-
 #define DEF(x) string("#define ") + string(BOOST_PP_STRINGIZE (x))
-
-
-auto PARSE_H (string s)
-{
-      
-}
-
-
-
-struct Kiss {string getString = "hej";};
-
 #define PARSE_1(s) [](string str){str = regex_replace (str, regex ("(.*)(\\[)"), R"($1)");str = regex_replace (str, regex ("(.*)(\\])"), R"($1)");str = regex_replace (str, regex ("(.*)(\\.)"), R"()");str = regex_replace (str, regex ("([a-z])([A-Z])"), R"($1_$2)");str = regex_replace (str, regex ("([[:digit:]]+)"), R"(_$1)");for (auto & c: str) c = toupper(c);str.insert (0, "_"); return str;}(string (s))
-
 #define PARSE(x, ...) PARSE_1 (BOOST_PP_STRINGIZE (x)) __VA_ARGS__ x
-// PARSE (k.getString, ...)  ->  GET_STRING ... k.getString
+
 int main (int argc, const char * argv[])
 {
-      
-      
-      
-      //      cout << parse ("k.getString") << endl;
-//      Kiss k;
-//      cout << "GET_STRING" << k.getString << endl;
-//      cout << "GPU_" << PARSE (k.getString, << " " <<) << endl;
-//      cout << []{return 0;}() << endl;
-//      return 0;
-      
-      
-
-      
-      
-      
-      
-
-      
-      
       string const output_file_path = argv [1];
       
       file <write> output_file (output_file_path);
       output_file << "#pragma once\n";
-      
-      
-      
-      
-      string ss = "maxImageDimension30f80D";
-      
-      
-      //      subject = regex_replace (subject, regex ("[a-z][A-Z]"), R"($&\)");
-      
-      
-      //      output_file << "#define SELF \"" << argv[1] << "\"\n";
-      
+
       
       glfwInit();
       auto instanceExtensions = []{
@@ -140,8 +96,6 @@ int main (int argc, const char * argv[])
       
       
       
-
-      
       for (auto& i : physicalDevices)
       {
             VkPhysicalDeviceProperties props = getPhysicalDeviceProperties (i);
@@ -169,7 +123,6 @@ int main (int argc, const char * argv[])
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[13], << " " <<) << " \n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[14], << " " <<) << " \n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[15], << " " <<) << " \n";
-            
             
             output_file << DEF (GPU_) << nr_of_gpus << "_TYPE_DISCRETE " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) << "\n";
             output_file << DEF (GPU_) << nr_of_gpus << "_TYPE_INTEGRATED " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU) << "\n";
@@ -234,17 +187,8 @@ int main (int argc, const char * argv[])
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.variableMultisampleRate, << " " <<) << " \n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.inheritedQueries, << " " <<) << " \n";
             
-            
-            
             output_file << "\n";
 
-            
-            
-            
-            
-            
-            
-//            output_file << "constexpr uint32_t GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D = " <<  limits.maxImageDimension1D << ";\n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxImageDimension1D, << " " <<) << " \n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxImageDimension2D, << " " << ) << " \n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDescriptorSetUniformBuffersDynamic, << " " << ) << " \n";
@@ -362,16 +306,12 @@ int main (int argc, const char * argv[])
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.optimalBufferCopyRowPitchAlignment, << " " <<) << "\n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.nonCoherentAtomSize, << " " <<) << "\n";
             
-
-            
             ++nr_of_gpus;
       }
-      
       
       vkDestroyInstance(instance, nullptr);
       glfwTerminate();
       
-      //      system("open test.hpp");
       return 0;
 }
 
