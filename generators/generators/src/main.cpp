@@ -11,27 +11,42 @@ auto PARSE_H (string s)
 
 
 
-#define PARSE(x) x
+struct Kiss {string getString = "hej";};
+
+#define PARSE_1(s) [](string str){}(string (s))
+
+#define PARSE(x, y)
 
 int main (int argc, const char * argv[])
 {
-      string s = "-46";
-      if (regex_match(s, regex ("(\\+|-)?[[:digit:]]+")))
-            cout << "yay" << endl;
+      Kiss k;
+      cout << "GET_STRING" << k.getString << endl;
+      cout << []{return 0;}() << endl;
       return 0;
-      cout << s << endl;
-      //#define KISS(left, )
-      cout << BOOST_PP_STRINGIZE (PARSE (maxImageDimension1D)) << endl;
       
-      return 0;
+      ss = regex_replace (ss, regex ("([a-z])([A-Z])"), R"($1_$2)");
+      ss = regex_replace (ss, regex ("([[:digit:]]+)"), R"(_$1)");
+      for (auto & c: ss) c = toupper(c);
+      cout << ss << endl;
+      
+      
+      
+      
+
+      
       
       string const output_file_path = argv [1];
       
       file <write> output_file (output_file_path);
       output_file << "#pragma once\n";
-      string upp = output_file_path;
-      for (auto& i : upp)
-            i = toupper(i);
+      
+      
+      
+      
+      string ss = "maxImageDimension30f80D";
+      
+      
+      //      subject = regex_replace (subject, regex ("[a-z][A-Z]"), R"($&\)");
       
       
       //      output_file << "#define SELF \"" << argv[1] << "\"\n";
