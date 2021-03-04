@@ -1,9 +1,30 @@
 #include "main.hpp"
 
 
+#define DEF(x) string("#define ") + string(BOOST_PP_STRINGIZE (x))
+
+
+auto PARSE_H (string s)
+{
+      
+}
+
+
+
+#define PARSE(x) x
 
 int main (int argc, const char * argv[])
 {
+      string s = "-46";
+      if (regex_match(s, regex ("(\\+|-)?[[:digit:]]+")))
+            cout << "yay" << endl;
+      return 0;
+      cout << s << endl;
+      //#define KISS(left, )
+      cout << BOOST_PP_STRINGIZE (PARSE (maxImageDimension1D)) << endl;
+      
+      return 0;
+      
       string const output_file_path = argv [1];
       
       file <write> output_file (output_file_path);
@@ -98,6 +119,10 @@ int main (int argc, const char * argv[])
       
       int nr_of_gpus = 0;
       
+      
+      
+
+      
       for (auto& i : physicalDevices)
       {
             auto props = getPhysicalDeviceProperties (i);
@@ -105,7 +130,7 @@ int main (int argc, const char * argv[])
             VkPhysicalDeviceLimits limits = props.limits;
             auto _int = to_string (nr_of_gpus);
 //            output_file << "constexpr uint32_t GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D = " <<  limits.maxImageDimension1D << ";\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.maxImageDimension1D << "\n";
+            output_file << DEF (GPU_) << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.maxImageDimension1D << "\n";
             output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_2D " <<  limits.maxImageDimension2D << "\n";
             output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_3D " <<  limits.maxImageDimension3D << "\n";
             output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_CUBE " <<  limits.maxImageDimensionCube << "\n";
@@ -200,24 +225,24 @@ int main (int argc, const char * argv[])
             output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.sampledImageDepthSampleCounts << "\n";
             output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.sampledImageStencilSampleCounts << "\n";
             output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.storageImageSampleCounts << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.maxSampleMaskWords << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.timestampComputeAndGraphics << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.timestampPeriod << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.maxClipDistances << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.maxCullDistances << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.maxCombinedClipAndCullDistances << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.discreteQueuePriorities << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.pointSizeRange[0] << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.pointSizeRange[1] << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.lineWidthRange[0] << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.lineWidthRange[1] << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.pointSizeGranularity << "\N";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.lineWidthGranularity << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.strictLines << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.standardSampleLocations << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.optimalBufferCopyOffsetAlignment << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.optimalBufferCopyRowPitchAlignment << "\n";
-            output_file << "#define GPU_" << nr_of_gpus << "_MAX_IMAGE_DIMENSION_1D " <<  limits.nonCoherentAtomSize << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_MAX_SAMPLE_MASK_WORDS " <<  limits.maxSampleMaskWords << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_TIMESTAMP_COMPUTE_AND_GRAPHICS " <<  limits.timestampComputeAndGraphics << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_TIMESTAMP_PERIOD " <<  limits.timestampPeriod << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_MAX_CLIP_DISTANCES " <<  limits.maxClipDistances << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_MAX_CULL_DISTANCES " <<  limits.maxCullDistances << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_MAX_COMBINED_CLIP_AND_CULL_DISTANCES " <<  limits.maxCombinedClipAndCullDistances << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_DISCRETE_QUEUE_PRIORITIES " <<  limits.discreteQueuePriorities << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_POINT_SIZE_RANGE_0 " <<  limits.pointSizeRange[0] << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_POINT_SIZE_RANGE_1 " <<  limits.pointSizeRange[1] << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_LINE_WIDTH_RANGE_0 " <<  limits.lineWidthRange[0] << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_LINE_WIDTH_RANGE_1 " <<  limits.lineWidthRange[1] << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_POINT_SIZE_GRANULARITY " <<  limits.pointSizeGranularity << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_LINES_WIDTH_GRANULARITY " <<  limits.lineWidthGranularity << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_STRUCT_LINES " <<  limits.strictLines << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_STANDARD_SAMPLE_LOCATIONS" <<  limits.standardSampleLocations << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_OPTIMAL_BUFFER_COPY_OFFSET_ALIGNMENT " <<  limits.optimalBufferCopyOffsetAlignment << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_OPTIMAL_BUFFER_COPY_ROW_PITCH_ALIGNMENT" <<  limits.optimalBufferCopyRowPitchAlignment << "\n";
+            output_file << "#define GPU_" << nr_of_gpus << "_NO_CHOHERENT_ATOM_SIZE " <<  limits.nonCoherentAtomSize << "\n";
 
 
             
