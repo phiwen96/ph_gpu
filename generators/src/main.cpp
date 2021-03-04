@@ -97,6 +97,111 @@ static constexpr uint32_t max_image_dimension_1D =  BOOST_PP_CAT (GPU_, n);\
 struct gpu <n> \
 { \
 static constexpr uint32_t max_image_dimension_1D =  CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D));\
+static constexpr uint32_t              maxImageDimension2D = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D));\
+static constexpr uint32_t              maxImageDimension3D = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxImageDimensionCube = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxImageArrayLayers = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTexelBufferElements = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxUniformBufferRange = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxStorageBufferRange = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxPushConstantsSize = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxMemoryAllocationCount = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxSamplerAllocationCount = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint64_t          bufferImageGranularity = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint64_t          sparseAddressSpaceSize = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxBoundDescriptorSets = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxPerStageDescriptorSamplers = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxPerStageDescriptorUniformBuffers = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxPerStageDescriptorStorageBuffers = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxPerStageDescriptorSampledImages = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxPerStageDescriptorStorageImages = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxPerStageDescriptorInputAttachments = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxPerStageResources = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxDescriptorSetSamplers = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxDescriptorSetUniformBuffers = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxDescriptorSetUniformBuffersDynamic = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxDescriptorSetStorageBuffers = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxDescriptorSetStorageBuffersDynamic = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxDescriptorSetSampledImages = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxDescriptorSetStorageImages = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxDescriptorSetInputAttachments = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxVertexInputAttributes = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxVertexInputBindings = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxVertexInputAttributeOffset = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxVertexInputBindingStride = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxVertexOutputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTessellationGenerationLevel = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTessellationPatchSize = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTessellationControlPerVertexInputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTessellationControlPerVertexOutputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTessellationControlPerPatchOutputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTessellationControlTotalOutputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTessellationEvaluationInputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTessellationEvaluationOutputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxGeometryShaderInvocations = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxGeometryInputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxGeometryOutputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxGeometryOutputVertices = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxGeometryTotalOutputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxFragmentInputComponents = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxFragmentOutputAttachments = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxFragmentDualSrcAttachments = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxFragmentCombinedOutputResources = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxComputeSharedMemorySize = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxComputeWorkGroupCount[3] = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxComputeWorkGroupInvocations = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxComputeWorkGroupSize[3] = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              subPixelPrecisionBits = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              subTexelPrecisionBits = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              mipmapPrecisionBits = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxDrawIndexedIndexValue = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxDrawIndirectCount = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr float                 maxSamplerLodBias = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr float                 maxSamplerAnisotropy = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxViewports = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxViewportDimensions[2] = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr float                 viewportBoundsRange[2] = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              viewportSubPixelBits = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+size_t                minMemoryMapAlignment = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint64_t          minTexelBufferOffsetAlignment = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint64_t          minUniformBufferOffsetAlignment = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint64_t          minStorageBufferOffsetAlignment = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+int32_t               minTexelOffset = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTexelOffset = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+int32_t               minTexelGatherOffset = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxTexelGatherOffset = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr float                 minInterpolationOffset = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr float                 maxInterpolationOffset = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              subPixelInterpolationOffsetBits = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxFramebufferWidth = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxFramebufferHeight = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxFramebufferLayers = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+VkSampleCountFlags    framebufferColorSampleCounts = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+VkSampleCountFlags    framebufferDepthSampleCounts = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+VkSampleCountFlags    framebufferStencilSampleCounts = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+VkSampleCountFlags    framebufferNoAttachmentsSampleCounts = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxColorAttachments = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+VkSampleCountFlags    sampledImageColorSampleCounts = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+VkSampleCountFlags    sampledImageIntegerSampleCounts = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+VkSampleCountFlags    sampledImageDepthSampleCounts = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+VkSampleCountFlags    sampledImageStencilSampleCounts = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+VkSampleCountFlags    storageImageSampleCounts = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              maxSampleMaskWords = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              timestampComputeAndGraphics = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr float                 timestampPeriod = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+uint32_t              maxClipDistances = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+uint32_t              maxCullDistances = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+uint32_t              maxCombinedClipAndCullDistances = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+uint32_t              discreteQueuePriorities = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr float                 pointSizeRange[2] = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr float                 lineWidthRange[2] = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr float                 pointSizeGranularity = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr float                 lineWidthGranularity = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              strictLines = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint32_t              standardSampleLocations = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint64_t          optimalBufferCopyOffsetAlignment = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint64_t          optimalBufferCopyRowPitchAlignment = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
+static constexpr uint64_t          nonCoherentAtomSize = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); \
 };
 
 
@@ -108,7 +213,7 @@ static constexpr uint32_t max_image_dimension_1D =  CAT ((GPU_) (n) (_MAX_IMAGE_
 int main (int argc, const char * argv[])
 {
       cout << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(5, DECL, int x)) << endl;
-
+      
       
 //       cout << BOOST_PP_STRINGIZE (BOOST_PP_FOR ((0, BOOST_PP_DEC (GPU_COUNT), kiss), PRED, OP, MACRO4)) << endl; // expands to 5 6 7 8 9 10)
 

@@ -13,17 +13,16 @@ auto PARSE_H (string s)
 
 struct Kiss {string getString = "hej";};
 
-#define PARSE_1(s) [](string str){str = regex_replace (str, regex ("(.*)(\\.)"), R"()");str = regex_replace (str, regex ("([a-z])([A-Z])"), R"($1_$2)");str = regex_replace (str, regex ("([[:digit:]]+)"), R"(_$1)");for (auto & c: str) c = toupper(c);str.insert (0, "_"); return str;}(string (s))
+#define PARSE_1(s) [](string str){str = regex_replace (str, regex ("(.*)(\\[)"), R"($1)");str = regex_replace (str, regex ("(.*)(\\])"), R"($1)");str = regex_replace (str, regex ("(.*)(\\.)"), R"()");str = regex_replace (str, regex ("([a-z])([A-Z])"), R"($1_$2)");str = regex_replace (str, regex ("([[:digit:]]+)"), R"(_$1)");for (auto & c: str) c = toupper(c);str.insert (0, "_"); return str;}(string (s))
 
 #define PARSE(x, ...) PARSE_1 (BOOST_PP_STRINGIZE (x)) __VA_ARGS__ x
 // PARSE (k.getString, ...)  ->  GET_STRING ... k.getString
 int main (int argc, const char * argv[])
 {
       
-//      auto parse = [](string str){
-//            str = regex_replace (str, regex ("(.*)(\\.)"), R"()");
-//            str = regex_replace (str, regex ("([a-z])([A-Z])"), R"($1_$2)");str = regex_replace (str, regex ("([[:digit:]]+)"), R"(_$1)");for (auto & c: str) c = toupper(c);return str;};
-//      cout << parse ("k.getString") << endl;
+      
+      
+      //      cout << parse ("k.getString") << endl;
 //      Kiss k;
 //      cout << "GET_STRING" << k.getString << endl;
 //      cout << "GPU_" << PARSE (k.getString, << " " <<) << endl;
