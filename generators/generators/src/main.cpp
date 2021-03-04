@@ -263,6 +263,10 @@ int main (int argc, const char * argv[])
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationControlTotalOutputComponents, << " " <<) << "\n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationEvaluationInputComponents, << " " <<) << "\n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationEvaluationOutputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDescriptorSetSamplers, << " " <<) << "\n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageDescriptorStorageBuffers, << " " <<) << "\n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageDescriptorUniformBuffers, << " " <<) << "\n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxMemoryAllocationCount, << " " <<) << "\n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxGeometryShaderInvocations, << " " <<) << "\n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxGeometryInputComponents, << " " <<) << "\n";
             output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxGeometryOutputComponents, << " " <<) << "\n";

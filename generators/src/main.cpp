@@ -109,7 +109,7 @@ TB static constexpr uint32_t              maxStorageBufferRange = CAT ((GPU_) (n
 TB static constexpr uint32_t              maxPushConstantsSize = CAT ((GPU_) (n) (_MAX_PUSH_CONSTANTS_SIZE));  NL \
 TB static constexpr uint32_t              maxMemoryAllocationCount = CAT ((GPU_) (n) (_MAX_MEMORY_ALLOCATION_COUNT));  NL \
 TB static constexpr uint32_t              maxSamplerAllocationCount = CAT ((GPU_) (n) (_MAX_SAMPLER_ALLOCATION_COUNT));  NL \
-TB static constexpr uint64_t          bufferImageGranularity = CAT ((GPU_) (n) (_MAX_BUFFER_IMAGE_GRANULARITY));  NL \
+TB static constexpr uint64_t          bufferImageGranularity = CAT ((GPU_) (n) (_BUFFER_IMAGE_GRANULARITY));  NL \
 TB static constexpr uint64_t          sparseAddressSpaceSize = CAT ((GPU_) (n) (_SPARSE_ADDRESS_SPACE_SIZE));  NL \
 TB static constexpr uint32_t              maxBoundDescriptorSets = CAT ((GPU_) (n) (_MAX_BOUND_DESCRIPTOR_SETS));  NL \
 TB static constexpr uint32_t              maxPerStageDescriptorSamplers = CAT ((GPU_) (n) (_MAX_PER_STAGE_DESCRIPTOR_SAMPLERS));  NL \
@@ -121,7 +121,7 @@ TB static constexpr uint32_t              maxPerStageDescriptorInputAttachments 
 TB static constexpr uint32_t              maxPerStageResources = CAT ((GPU_) (n) (_MAX_PER_STAGE_RESOURCES));  NL \
 TB static constexpr uint32_t              maxDescriptorSetSamplers = CAT ((GPU_) (n) (_MAX_DESCRIPTOR_SET_SAMPLERS));  NL \
 TB static constexpr uint32_t              maxDescriptorSetUniformBuffers = CAT ((GPU_) (n) (_MAX_DESCRIPTOR_SET_UNIFORM_BUFFERS));  NL \
-TB static constexpr uint32_t              maxDescriptorSetUniformBuffersDynamic = CAT ((GPU_) (n) (_MAX_DESCRIPTOR_SET_UNOFIRM_BUFFERS_DYNAMIC));  NL \
+TB static constexpr uint32_t              maxDescriptorSetUniformBuffersDynamic = CAT ((GPU_) (n) (_MAX_DESCRIPTOR_SET_UNIFORM_BUFFERS_DYNAMIC));  NL \
 TB static constexpr uint32_t              maxDescriptorSetStorageBuffers = CAT ((GPU_) (n) (_MAX_DESCRIPTOR_SET_STORAGE_BUFFERS));  NL \
 TB static constexpr uint32_t              maxDescriptorSetStorageBuffersDynamic = CAT ((GPU_) (n) (_MAX_DESCRIPTOR_SET_STORAGE_BUFFERS_DYNAMIC));  NL \
 TB static constexpr uint32_t              maxDescriptorSetSampledImages = CAT ((GPU_) (n) (_MAX_DESCRIPTOR_SET_SAMPLED_IMAGES));  NL \
@@ -138,8 +138,8 @@ TB static constexpr uint32_t              maxTessellationControlPerVertexInputCo
 TB static constexpr uint32_t              maxTessellationControlPerVertexOutputComponents = CAT ((GPU_) (n) (_MAX_TESSELLATION_CONTROL_PER_VERTEX_OUTPUT_COMPONENTS));  NL \
 TB static constexpr uint32_t              maxTessellationControlPerPatchOutputComponents = CAT ((GPU_) (n) (_MAX_TESSELLATION_CONTROL_PER_PATCH_OUTPUT_COMPONENTS));  NL \
 TB static constexpr uint32_t              maxTessellationControlTotalOutputComponents = CAT ((GPU_) (n) (_MAX_TESSELLATION_CONTROL_TOTAL_OUTPUT_COMPONENTS));  NL \
-TB static constexpr uint32_t              maxTessellationEvaluationInputComponents = CAT ((GPU_) (n) (MAX_TESSELLATION_EVALUATION_INPUT_COMPONENTS));  NL \
-TB static constexpr uint32_t              maxTessellationEvaluationOutputComponents = CAT ((GPU_) (n) (MAX_TESSELLATION_EVALUATION_OUTPUT_COMPONENTS));  NL \
+TB static constexpr uint32_t              maxTessellationEvaluationInputComponents = CAT ((GPU_) (n) (_MAX_TESSELLATION_EVALUATION_INPUT_COMPONENTS));  NL \
+TB static constexpr uint32_t              maxTessellationEvaluationOutputComponents = CAT ((GPU_) (n) (_MAX_TESSELLATION_EVALUATION_OUTPUT_COMPONENTS));  NL \
 TB static constexpr uint32_t              maxGeometryShaderInvocations = CAT ((GPU_) (n) (_MAX_GEOMETRY_SHADER_INVOCATIONS));  NL \
 TB static constexpr uint32_t              maxGeometryInputComponents = CAT ((GPU_) (n) (_MAX_GEOMETRY_INPUT_COMPONENTS));  NL \
 TB static constexpr uint32_t              maxGeometryOutputComponents = CAT ((GPU_) (n) (_MAX_GEOMETRY_OUTPUT_COMPONENTS));  NL \
@@ -180,7 +180,7 @@ TB static constexpr uint32_t              maxFramebufferHeight = CAT ((GPU_) (n)
 TB static constexpr uint32_t              maxFramebufferLayers = CAT ((GPU_) (n) (_MAX_FRAMEBUFFER_LAYERS));  NL \
 TB static constexpr uint32_t    framebufferColorSampleCounts = CAT ((GPU_) (n) (_FRAMEBUFFER_COLOR_SAMPLE_COUNTS));  NL \
 TB static constexpr uint32_t    framebufferDepthSampleCounts = CAT ((GPU_) (n) (_FRAMEBUFFER_DEPTH_SAMPLE_COUNTS));  NL \
-TB static constexpr uint32_t    framebufferStencilSampleCounts = CAT ((GPU_) (n) (_FRAMBUFFER_STENCIL_SAMPLE_COUNTS));  NL \
+TB static constexpr uint32_t    framebufferStencilSampleCounts = CAT ((GPU_) (n) (_FRAME_BUFFER_STENCIL_SAMPLE_COUNTS));  NL \
 TB static constexpr uint32_t    framebufferNoAttachmentsSampleCounts = CAT ((GPU_) (n) (_FRAMEBUFFER_NO_ATTACHMENTS_SAMPLE_COUNTS));  NL \
 TB static constexpr uint32_t              maxColorAttachments = CAT ((GPU_) (n) (_MAX_COLOR_ATTACHMENTS));  NL \
 TB static constexpr uint32_t    sampledImageColorSampleCounts = CAT ((GPU_) (n) (_SAMPLED_IMAGE_COLOR_SAMPLE_COUNTS));  NL \
@@ -200,10 +200,10 @@ TB static constexpr uint32_t              lineWidthRange[2] = {CAT ((GPU_) (n) (
 TB static constexpr float                 pointSizeGranularity = CAT ((GPU_) (n) (_POINT_SIZE_GRANULARITY));  NL \
 TB static constexpr float                 lineWidthGranularity = CAT ((GPU_) (n) (_LINE_WIDTH_GRANULARITY));  NL \
 TB static constexpr uint32_t              strictLines = CAT ((GPU_) (n) (_STRICT_LINES));  NL \
-TB static constexpr uint32_t              standardSampleLocations = CAT ((GPU_) (n) (STANDARD_SAMPLE_LOCATIONS));  NL \
-TB static constexpr uint64_t          optimalBufferCopyOffsetAlignment = CAT ((GPU_) (n) (OPTIMAL_BUFFER_COPY_OFFSET_ALIGNMENT));  NL \
+TB static constexpr uint32_t              standardSampleLocations = CAT ((GPU_) (n) (_STANDARD_SAMPLE_LOCATIONS));  NL \
+TB static constexpr uint64_t          optimalBufferCopyOffsetAlignment = CAT ((GPU_) (n) (_OPTIMAL_BUFFER_COPY_OFFSET_ALIGNMENT));  NL \
 TB static constexpr uint64_t          optimalBufferCopyRowPitchAlignment = CAT ((GPU_) (n) (_OPTIMAL_BUFFER_COPY_ROW_PITCH_ALIGNMENT));  NL \
-TB static constexpr uint64_t          nonCoherentAtomSize = CAT ((GPU_) (n) (NON_COHERENT_ATOM_SIZE));  NL \
+TB static constexpr uint64_t          nonCoherentAtomSize = CAT ((GPU_) (n) (_NON_COHERENT_ATOM_SIZE));  NL \
 }; NL NL
 
 
@@ -217,7 +217,7 @@ int main (int argc, const char * argv[])
 {
       
       
-      cout << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(5, DECL, int x)) << endl;
+      cout << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(1, DECL, int x)) << endl;
       
       
 //       cout << BOOST_PP_STRINGIZE (BOOST_PP_FOR ((0, BOOST_PP_DEC (GPU_COUNT), kiss), PRED, OP, MACRO4)) << endl; // expands to 5 6 7 8 9 10)
