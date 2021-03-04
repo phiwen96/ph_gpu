@@ -69,6 +69,12 @@ template <>
  
  	 struct properties 
  	 { 
+ 	 	 static constexpr uint32_t apiVersion = 4198562; 
+ 	 	 static constexpr uint32_t driverVersion = 10101; 
+ 	 	 static constexpr uint32_t vendorID = 32902; 
+ 	 	 static constexpr uint32_t deviceID = 22822; 
+ 	 	 static constexpr char deviceName [256] = "Intel(R) Iris(TM) Plus Graphics 640"; 
+ 
  	 	 struct limits 
  	 	 { 
  	 	 	 static constexpr uint32_t max_image_dimension_1D = 16384; 

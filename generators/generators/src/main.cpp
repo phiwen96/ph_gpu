@@ -148,6 +148,27 @@ int main (int argc, const char * argv[])
             VkPhysicalDeviceFeatures feats = getPhysicalDeviceFeatures (i);
             VkPhysicalDeviceLimits limits = props.limits;
             
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.apiVersion, << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.driverVersion, << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.vendorID, << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.deviceID, << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.deviceName, << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[0], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[1], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[2], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[3], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[4], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[5], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[6], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[7], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[8], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[9], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[10], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[11], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[12], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[13], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[14], << " " <<) << " \n";
+            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[15], << " " <<) << " \n";
             
             
             output_file << DEF (GPU_) << nr_of_gpus << "_TYPE_DISCRETE " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) << "\n";

@@ -161,6 +161,12 @@ TB }; NL NL \
 \
 TB struct properties NL \
 TB { NL \
+TB TB static constexpr uint32_t apiVersion =  CAT ((GPU_) (n) (_API_VERSION)); NL \
+TB TB static constexpr uint32_t driverVersion =  CAT ((GPU_) (n) (_DRIVER_VERSION)); NL \
+TB TB static constexpr uint32_t vendorID =  CAT ((GPU_) (n) (_VENDOR_ID)); NL \
+TB TB static constexpr uint32_t deviceID =  CAT ((GPU_) (n) (_DEVICE_ID)); NL \
+TB TB static constexpr char deviceName [VK_MAX_PHYSICAL_DEVICE_NAME_SIZE] = BOOST_PP_STRINGIZE (CAT ((GPU_) (n) (_DEVICE_NAME))); NL NL \
+\
 TB TB struct limits NL \
 TB TB { NL \
 TB TB TB static constexpr uint32_t max_image_dimension_1D =  CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
