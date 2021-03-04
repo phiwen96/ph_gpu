@@ -285,8 +285,9 @@ int main (int argc, const char * argv[])
       file <write> header (argv [1]);
       header << "#pragma once \n";
       header << "#include <iostream>\n";
+      header << "#define GPU_COUNT " << GPU_COUNT << "\n\n";
       header << "template <int>\nstruct gpu;\n\n";
-      header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(1, DECL, int x));
+      header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(GPU_COUNT, DECL, int x));
       
 //      cout << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(1, DECL, int x)) << endl;
       

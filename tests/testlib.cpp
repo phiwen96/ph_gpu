@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
-#include <ph_gpu/ph_gpu.hpp>
+#include <ph_gpu/gpu.hpp>
 using namespace std;
 
 

@@ -1,5 +1,7 @@
 #pragma once 
 #include <iostream>
+#define GPU_COUNT 1
+
 template <int>
 struct gpu;
 
