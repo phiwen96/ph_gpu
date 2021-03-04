@@ -98,6 +98,66 @@ static constexpr uint32_t max_image_dimension_1D =  BOOST_PP_CAT (GPU_, n);\
 #define DECL(z, n, text) \
 struct gpu <n> NL \
 { NL \
+TB struct features NL \
+TB { NL \
+TB TB static constexpr uint32_t    robustBufferAccess = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    fullDrawIndexUint32 = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    imageCubeArray = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    independentBlend = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    geometryShader = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    tessellationShader = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    sampleRateShading = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    dualSrcBlend = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    logicOp = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    multiDrawIndirect = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    drawIndirectFirstInstance = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    depthClamp = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    depthBiasClamp = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    fillModeNonSolid = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    depthBounds = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    wideLines = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    largePoints = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    alphaToOne = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    multiViewport = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    samplerAnisotropy = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    textureCompressionETC2 = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    textureCompressionASTC_LDR = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    textureCompressionBC = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    occlusionQueryPrecise = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    pipelineStatisticsQuery = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    vertexPipelineStoresAndAtomics = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    fragmentStoresAndAtomics = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderTessellationAndGeometryPointSize = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderImageGatherExtended = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderStorageImageExtendedFormats = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderStorageImageMultisample = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderStorageImageReadWithoutFormat = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderStorageImageWriteWithoutFormat = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderUniformBufferArrayDynamicIndexing = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderSampledImageArrayDynamicIndexing = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderStorageBufferArrayDynamicIndexing = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderStorageImageArrayDynamicIndexing = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderClipDistance = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderCullDistance = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderFloat64 = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderInt64 = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderInt16 = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderResourceResidency = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    shaderResourceMinLod = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    sparseBinding = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    sparseResidencyBuffer = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    sparseResidencyImage2D = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    sparseResidencyImage3D = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    sparseResidency2Samples = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    sparseResidency4Samples = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    sparseResidency8Samples = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    sparseResidency16Samples = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    sparseResidencyAliased = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    variableMultisampleRate = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB TB static constexpr uint32_t    inheritedQueries = CAT ((GPU_) (n) (_MAX_IMAGE_DIMENSION_1D)); NL \
+TB } NL NL \
+\
+\
 TB struct properties NL \
 TB { NL \
 TB TB limits NL \
