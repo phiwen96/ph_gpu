@@ -15,24 +15,44 @@ template <>
  	 struct queue <0> 
  	 { 
  	 	 static constexpr int index = 0; 
+ 	 	 static constexpr int graphics = 1; 
+ 	 	 static constexpr int compute = 1; 
+ 	 	 static constexpr int transfer = 1; 
+ 	 	 static constexpr int sparse_binding = 0; 
+ 	 	 static constexpr int protecteed = 0; 
  	 }; 
  
  	 template <> 
  	 struct queue <1> 
  	 { 
  	 	 static constexpr int index = 1; 
+ 	 	 static constexpr int graphics = 1; 
+ 	 	 static constexpr int compute = 1; 
+ 	 	 static constexpr int transfer = 1; 
+ 	 	 static constexpr int sparse_binding = 0; 
+ 	 	 static constexpr int protecteed = 0; 
  	 }; 
  
  	 template <> 
  	 struct queue <2> 
  	 { 
  	 	 static constexpr int index = 2; 
+ 	 	 static constexpr int graphics = 1; 
+ 	 	 static constexpr int compute = 1; 
+ 	 	 static constexpr int transfer = 1; 
+ 	 	 static constexpr int sparse_binding = 0; 
+ 	 	 static constexpr int protecteed = 0; 
  	 }; 
  
  	 template <> 
  	 struct queue <3> 
  	 { 
  	 	 static constexpr int index = 3; 
+ 	 	 static constexpr int graphics = 1; 
+ 	 	 static constexpr int compute = 1; 
+ 	 	 static constexpr int transfer = 1; 
+ 	 	 static constexpr int sparse_binding = 0; 
+ 	 	 static constexpr int protecteed = 0; 
  	 }; 
  
  	 struct features 

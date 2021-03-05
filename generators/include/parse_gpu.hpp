@@ -11,6 +11,11 @@ TB template <> NL \
 TB struct queue <queue_index> NL \
 TB { NL \
 TB TB static constexpr int index = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _INDEX)))); NL \
+TB TB static constexpr int graphics = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _GRAPHICS)))); NL \
+TB TB static constexpr int compute = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _COMPUTE)))); NL \
+TB TB static constexpr int transfer = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _TRANSFER)))); NL \
+TB TB static constexpr int sparse_binding = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _SPARSE_BINDING)))); NL \
+TB TB static constexpr int protecteed = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _PROTECTED)))); NL \
 TB }; NL NL
 
 
