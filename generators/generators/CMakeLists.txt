@@ -14,41 +14,25 @@ target_sources (gpu_gen_definitions PRIVATE ${SOURCE_LIST} ${HEADER_LIST})
 
 
 
-function(generate target file)
-add_custom_command (
-	# OUTPUT
-	#  ${gpus_info_generator_BINARY_DIR}/generated/generated.hpp
-	TARGET ${target}
-	PRE_BUILD
-	COMMAND $<TARGET_FILE:gpu_gen_definitions> ${file})
+function(generate target instance_file gpu_file)
+	add_custom_command (
+		TARGET ${target}
+		PRE_BUILD
+		COMMAND $<TARGET_FILE:gpu_gen_definitions> ${instance_file} ${gpu_file})
 endfunction()
 
 
-# add_custom_command (
-# OUTPUT
-#  ${gpus_info_generator_BINARY_DIR}/generated/generated.hpp
-# # TARGET graphics_generator
-# PRE_BUILD
-# COMMAND $<TARGET_FILE:gpus_info_generator> ${gpus_info_generator_BINARY_DIR}/generated/generated.hpp)
-
 target_link_libraries(gpu_gen_definitions
-PRIVATE 
-# /Users/pw/vulkansdk/MoltenVK/dylib/macOS/libMoltenVK.dylib 
-# /Users/pw/vulkansdk/macOS/lib/libVkLayer_khronos_validation.dylib
-# /Users/pw/vulkansdk/macOS/lib/libvulkan.1.2.170.dylib
-# /Users/pw/vulkansdk/macOS/lib/libvulkan.1.dylib
-${Boost_LIBRARIES}
-${Vulkan_LIBRARIES}
-glfw
+	PRIVATE 
+	${Boost_LIBRARIES}
+	${Vulkan_LIBRARIES}
+	glfw
 )
 
 target_include_directories(gpu_gen_definitions PRIVATE 
-include
-# /Users/pw/vulkansdk/macOS/include
-# /Users/pw/vulkansdk/MoltenVK/include 
-${Boost_INCLUDE_DIRS}
-${Vulkan_INCLUDE_DIRS}
-glfw
-# /usr/local/Cellar/boost/1.75.0_1/include
-${CMAKE_CURRENT_BINARY_DIR}
+	include
+	${Boost_INCLUDE_DIRS}
+	${Vulkan_INCLUDE_DIRS}
+	glfw
+	${CMAKE_CURRENT_BINARY_DIR}
 )

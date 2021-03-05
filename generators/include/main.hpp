@@ -152,7 +152,8 @@ struct file <write>
 
 #include <ostream>
 #include <type_traits>
-#include <gpu_gen_definitions.hpp>
+#include GENERATED_GPU_FILE
+
 //#include <generated.hpp>
 
 string readFileIntoString(const string& path) {
