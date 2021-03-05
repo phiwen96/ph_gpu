@@ -69,8 +69,8 @@ template <>
  
  	 struct properties 
  	 { 
- 	 	 static constexpr uint32_t apiVersion = 4198562; 
- 	 	 static constexpr uint32_t driverVersion = 10101; 
+ 	 	 static constexpr uint32_t apiVersion = 4198570; 
+ 	 	 static constexpr uint32_t driverVersion = 10102; 
  	 	 static constexpr uint32_t vendorID = 32902; 
  	 	 static constexpr uint32_t deviceID = 22822; 
  	 	 static constexpr char deviceName [256] = "Intel(R) Iris(TM) Plus Graphics 640"; 
@@ -90,7 +90,7 @@ template <>
  	 	 	 static constexpr uint32_t maxSamplerAllocationCount = 1073741824; 
  	 	 	 static constexpr uint64_t bufferImageGranularity = 256; 
  	 	 	 static constexpr uint64_t sparseAddressSpaceSize = 0; 
- 	 	 	 static constexpr uint32_t maxBoundDescriptorSets = 1073741824; 
+ 	 	 	 static constexpr uint32_t maxBoundDescriptorSets = 8; 
  	 	 	 static constexpr uint32_t maxPerStageDescriptorSamplers = 16; 
  	 	 	 static constexpr uint32_t maxPerStageDescriptorUniformBuffers = 31; 
  	 	 	 static constexpr uint32_t maxPerStageDescriptorStorageBuffers = 31; 

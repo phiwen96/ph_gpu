@@ -33,9 +33,10 @@ endfunction()
 
 target_link_libraries(gpu_gen_definitions
 PRIVATE 
-/Users/pw/vulkansdk/MoltenVK/dylib/macOS/libMoltenVK.dylib 
-/Users/pw/vulkansdk/macOS/lib/libVkLayer_khronos_validation.dylib
-/Users/pw/vulkansdk/macOS/lib/libvulkan.1.2.162.dylib
+# /Users/pw/vulkansdk/MoltenVK/dylib/macOS/libMoltenVK.dylib 
+# /Users/pw/vulkansdk/macOS/lib/libVkLayer_khronos_validation.dylib
+/Users/pw/vulkansdk/macOS/lib/libvulkan.1.2.170.dylib
+/Users/pw/vulkansdk/macOS/lib/libvulkan.1.dylib
 glfw
 )
 

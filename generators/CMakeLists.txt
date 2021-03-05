@@ -21,9 +21,10 @@ target_compile_definitions (gpu_generate_class PRIVATE GENERATED_INCLUDE_FILE="$
 
 target_link_libraries(gpu_generate_class
 PRIVATE 
-	/Users/pw/vulkansdk/MoltenVK/dylib/macOS/libMoltenVK.dylib 
-	/Users/pw/vulkansdk/macOS/lib/libVkLayer_khronos_validation.dylib
-	/Users/pw/vulkansdk/macOS/lib/libvulkan.1.2.162.dylib
+	# /Users/pw/vulkansdk/MoltenVK/dylib/macOS/libMoltenVK.dylib 
+	# /Users/pw/vulkansdk/macOS/lib/libVkLayer_khronos_validation.dylib
+	/Users/pw/vulkansdk/macOS/lib/libvulkan.1.2.170.dylib
+	/Users/pw/vulkansdk/macOS/lib/libvulkan.1.dylib
 	glfw
 )
 

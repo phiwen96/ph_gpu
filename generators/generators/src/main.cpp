@@ -2,7 +2,21 @@
 #define DEF(x) string("#define ") + string(BOOST_PP_STRINGIZE (x))
 #define PARSE_1(s) [](string str){str = regex_replace (str, regex ("(.*)(\\[)"), R"($1)");str = regex_replace (str, regex ("(.*)(\\])"), R"($1)");str = regex_replace (str, regex ("(.*)(\\.)"), R"()");str = regex_replace (str, regex ("([a-z])([A-Z])"), R"($1_$2)");str = regex_replace (str, regex ("([[:digit:]]+)"), R"(_$1)");for (auto & c: str) c = toupper(c);str.insert (0, "_"); return str;}(string (s))
 #define PARSE(x, ...) PARSE_1 (BOOST_PP_STRINGIZE (x)) __VA_ARGS__ x
-auto getInstance = [] () -> VkInstance {
+auto getInstanceExtensions = [] () -> vector<VkExtensionProperties> {
+      uint32_t extensionCount = 0;
+      vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+      vector<VkExtensionProperties> extensions (extensionCount);
+      vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
+      return extensions;
+};
+auto getInstanceValidationLayers = [] () -> vector<VkLayerProperties> {
+      uint32_t layerCount = 0;
+      vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+      vector<VkLayerProperties> availableLayers (layerCount);
+      vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+      return availableLayers;
+};
+auto getInstance = [] (vector<VkExtensionProperties>& extensions, vector<VkLayerProperties>& layers) -> VkInstance {
       VkApplicationInfo appInfo
       {
             .sType                  = VK_STRUCTURE_TYPE_APPLICATION_INFO,
@@ -17,13 +31,23 @@ auto getInstance = [] () -> VkInstance {
       
       VkInstance instance;
       
+      vector <char const*> extensionNames;
+      for (auto const& i : extensions)
+            extensionNames.push_back (i.extensionName);
+      
+      vector <char const*> layerNames;
+      for (auto const& i : layers)
+            layerNames.push_back (i.layerName);
+      
+      
       VkInstanceCreateInfo createInfo
       {
             .sType                        = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
             .pApplicationInfo             = &appInfo,
-            .enabledExtensionCount        = 0,//glfwExtensionCount,
-            .ppEnabledExtensionNames      = nullptr,//glfwExtensions,
-            .enabledLayerCount            = 0
+            .enabledExtensionCount        = (uint32_t) extensionNames.size(),
+            .ppEnabledExtensionNames      = extensionNames.data(),
+            .enabledLayerCount = (uint32_t) layerNames.size(),
+            .ppEnabledLayerNames = layerNames.data()
       };
       
       
@@ -35,20 +59,6 @@ auto getInstance = [] () -> VkInstance {
             throw runtime_error ("failed to create instance");
       }
       return instance;
-};
-auto getInstanceExtensions = [] () -> vector<VkExtensionProperties> {
-      uint32_t extensionCount = 0;
-      vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-      vector<VkExtensionProperties> extensions (extensionCount);
-      vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
-      return extensions;
-};
-auto getInstanceValidationLayers = [] () -> vector<VkLayerProperties> {
-      uint32_t layerCount = 0;
-      vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
-      vector<VkLayerProperties> availableLayers (layerCount);
-      vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
-      return availableLayers;
 };
 auto getPhysicalDevices = [] (VkInstance& instance) -> vector<VkPhysicalDevice> {
       uint32_t deviceCount = 0;
@@ -85,7 +95,7 @@ int main (int argc, const char * argv[])
       glfwInit();
       auto instanceExtensions = getInstanceExtensions ();
       auto instanceValidationLayers = getInstanceValidationLayers ();
-      auto instance = getInstance ();
+      auto instance = getInstance (instanceExtensions, instanceValidationLayers);
       auto physicalDevices = getPhysicalDevices (instance);
       output_file << "#define GPU_COUNT " << physicalDevices.size() << "\n";
 
@@ -137,6 +147,7 @@ int main (int argc, const char * argv[])
                   {
                         compute += "0 \n";
                   }
+                  
                   if (queueFamily.queueFlags & VK_QUEUE_TRANSFER_BIT)
                   {
                         transfer += "1 \n";
