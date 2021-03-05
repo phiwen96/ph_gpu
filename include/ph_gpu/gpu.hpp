@@ -14,25 +14,25 @@ template <>
  	 template <> 
  	 struct queue <0> 
  	 { 
- 	 	 static constexpr int index = GPU_0_QUEUE_FAMILY_0; 
+ 	 	 static constexpr int index = 0; 
  	 }; 
  
  	 template <> 
  	 struct queue <1> 
  	 { 
- 	 	 static constexpr int index = GPU_0_QUEUE_FAMILY_1; 
+ 	 	 static constexpr int index = 1; 
  	 }; 
  
  	 template <> 
  	 struct queue <2> 
  	 { 
- 	 	 static constexpr int index = GPU_0_QUEUE_FAMILY_2; 
+ 	 	 static constexpr int index = 2; 
  	 }; 
  
  	 template <> 
  	 struct queue <3> 
  	 { 
- 	 	 static constexpr int index = GPU_0_QUEUE_FAMILY_3; 
+ 	 	 static constexpr int index = 3; 
  	 }; 
  
  	 struct features 

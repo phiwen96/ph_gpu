@@ -10,7 +10,7 @@
 TB template <> NL \
 TB struct queue <queue_index> NL \
 TB { NL \
-TB TB static constexpr int index = BOOST_PP_CAT (BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, queue_index))); NL \
+TB TB static constexpr int index = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _INDEX)))); NL \
 TB }; NL NL
 
 
