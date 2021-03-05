@@ -83,6 +83,8 @@ void parse_instance_extensions (auto& gpu_file)
 {
     vector <VkExtensionProperties> instanceExtensions = getInstanceExtensions ();
     
+    gpu_file << DEF (INSTANCE_EXTENSION_COUNT) << " " << instanceExtensions.size() << "\n";
+    
     for (int i = 0; auto const& instanceExtension : instanceExtensions)
     {
         gpu_file << DEF (INSTANCE_EXTENSION_) << i << "_NAME " << instanceExtension.extensionName << "\n";
@@ -93,6 +95,8 @@ void parse_instance_extensions (auto& gpu_file)
 void parse_instance_layers (auto& gpu_file)
 {
     vector <VkLayerProperties> instanceLayers = getInstanceLayers ();
+    
+    gpu_file << DEF (INSTANCE_LAYER_COUNT) << " " << instanceLayers.size() << "\n";
     
     for (int i = 0; auto const& instanceLayer : instanceLayers)
     {

@@ -16,6 +16,7 @@
 #include <vector>
 #include <string>
 #include <array>
+#include <utility>
 //#include <vulkan/vulkan.h>
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -126,7 +127,7 @@ template <class T, class U>
 concept convertible = is_convertible_v<T, U> and is_convertible_v<U, T>;
 
 template <>
-struct file <write>
+struct file <write>// : ofstream
 {
       ofstream m_file;
       using self = file<write>;
@@ -135,24 +136,28 @@ struct file <write>
       file (string const& n)
       {
             m_file.open (n);
+//          ofstream::open (n);
       }
       
       template <class T>
       auto operator<< (T&& v) -> decltype (auto)
       {
-            m_file << forward<T>(v);
+            m_file << std::forward<T>(v);
             return *this;
       }
       
       ~file ()
       {
+//          ofstream::close ();
             m_file.close ();
       }
 };
 
 #include <ostream>
 #include <type_traits>
-#include GENERATED_GPU_FILE
+
+
+
 
 //#include <generated.hpp>
 
