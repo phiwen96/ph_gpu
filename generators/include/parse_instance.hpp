@@ -9,12 +9,12 @@
 TB template <> NL \
 TB struct extension <n> NL \
 TB { NL \
-TB TB static constexpr const_str = CAT ((INSTANCE_EXTENSION_) (n) (_NAME)); NL \
+TB TB static constexpr const_str name = CAT ((INSTANCE_EXTENSION_) (n) (_NAME)); NL \
 TB }; NL
 
 #define DECL_INSTANCE_LAYERS(z, n, text) \
 TB template <> NL \
 TB struct layer <n> NL \
 TB { NL \
-TB TB static constexpr const_str = CAT ((INSTANCE_LAYER_) (n) (_NAME)); NL \
+TB TB static constexpr const_str name = CAT ((INSTANCE_LAYER_) (n) (_NAME)); NL \
 TB }; NL
