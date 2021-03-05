@@ -8,7 +8,7 @@ file(GLOB_RECURSE SOURCE_LIST src/*.cpp)
 
 add_executable (gpu_gen_definitions)
 
-set_target_properties (gpu_gen_definitions PROPERTIES FOLDER "ph_gpu/Generators/gpu_generate_class/Generators")
+set_target_properties (gpu_gen_definitions PROPERTIES FOLDER "phulkan_generator/Generators/gpu_generate_class/Generators")
 
 target_sources (gpu_gen_definitions PRIVATE ${SOURCE_LIST} ${HEADER_LIST})
 

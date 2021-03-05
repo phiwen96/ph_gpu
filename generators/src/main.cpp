@@ -61,8 +61,8 @@ int main (int argc, const char * argv[])
 //        instance_header << "\tstruct extensions \n\t{\n";
 //        instance_header << "\t};\n\n";
     
-        instance_header << "\tstruct layer \n\t{\n";
-        instance_header << "\t};\n";
+//        instance_header << "\tstruct layer \n\t{\n";
+//        instance_header << "\t};\n";
     
         instance_header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(INSTANCE_EXTENSION_COUNT, DECL_INSTANCE_EXTENSIONS, int x));
         instance_header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(INSTANCE_LAYER_COUNT, DECL_INSTANCE_LAYERS, int x));

@@ -12,9 +12,6 @@ struct instance
 		template <int>
 		struct layer;
 
-	struct layer 
-	{
-	};
 	 template <> 
  	 struct extension <0> 
  	 { 
