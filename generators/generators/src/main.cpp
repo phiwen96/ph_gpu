@@ -113,17 +113,61 @@ int main (int argc, const char * argv[])
             output_file << DEF (GPU_) << i << "_QUEUE_FAMILIES_COUNT " << queue_families_count << " \n";
 
             vector <VkQueueFamilyProperties> queueFamilies (queue_families_count);
-            for (auto const& queueFamily : queueFamilies)
+            for (int j = 0; auto const& queueFamily : queueFamilies)
             {
-                  string graphics = string ("#define GPU_") + to_string (i) + string ("_QUEUE_FAMILY ") + to_string (queue_families_count) + string ("_GRAPHICS ");
+                  string graphics = DEF (GPU_) + to_string (i) + "_QUEUE_FAMILY_" + to_string (j) + "_GRAPHICS ";
+                  string compute = DEF (GPU_) + to_string (i) + "_QUEUE_FAMILY_" + to_string (j) + "_COMPUTE ";
+                  string transfer = DEF (GPU_) + to_string (i) + "_QUEUE_FAMILY_" + to_string (j) + "_TRANSFER ";
+                  string sparse_binding = DEF (GPU_) + to_string (i) + "_QUEUE_FAMILY_" + to_string (j) + "_SPARSE_BINDING ";
+                  string protect = DEF (GPU_) + to_string (i) + "_QUEUE_FAMILY_" + to_string (j) + "_PROTECTED ";
+
                   
                   if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
                   {
-                        output_file << DEF (GPU_)
-                                    << i << "_QUEUE_FAMILY "
-                                    << queue_families_count <<
-                                    "_GRAPHICS " << " \n";
+                        graphics += "1 \n";
+                  } else
+                  {
+                        graphics += "0 \n";
                   }
+                  
+                  if (queueFamily.queueFlags & VK_QUEUE_COMPUTE_BIT)
+                  {
+                        compute += "1 \n";
+                  } else
+                  {
+                        compute += "0 \n";
+                  }
+                  if (queueFamily.queueFlags & VK_QUEUE_TRANSFER_BIT)
+                  {
+                        transfer += "1 \n";
+                  } else
+                  {
+                        transfer += "0 \n";
+                  }
+                  
+                  if (queueFamily.queueFlags & VK_QUEUE_SPARSE_BINDING_BIT)
+                  {
+                        sparse_binding += "1 \n";
+                  } else
+                  {
+                        sparse_binding += "0 \n";
+                  }
+                  
+                  if (queueFamily.queueFlags & VK_QUEUE_PROTECTED_BIT)
+                  {
+                        protect += "1 \n";
+                  } else
+                  {
+                        protect += "0 \n";
+                  }
+                  
+                  
+                  output_file << graphics;
+                  output_file << compute;
+                  output_file << transfer;
+                  output_file << sparse_binding;
+                  output_file << protect;
+                  ++j;
             }
             
             VkPhysicalDeviceProperties props = getPhysicalDeviceProperties (physicalDevice);
