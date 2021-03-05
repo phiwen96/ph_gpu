@@ -1,4 +1,5 @@
 #pragma once
+
 #define GPU_COUNT 1
 #define GPU_0_QUEUE_FAMILIES_COUNT 4 
 #define GPU_0_QUEUE_FAMILY_0_GRAPHICS 0 

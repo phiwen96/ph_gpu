@@ -36,7 +36,7 @@ add_library (ph_gpu ${SOURCE_LIST} ${HEADER_LIST})
 # 		PRE_BUILD
 # 		COMMAND $<TARGET_FILE:graphics_generator> ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/gpu.hpp)
 
-generate (ph_gpu ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/gpu.hpp)
+generate (ph_gpu ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/instance.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/gpu.hpp)
 
 
 

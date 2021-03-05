@@ -10,22 +10,22 @@ auto a1 = strings[0].find("${");\
 \
 while (a1 != string::npos)\
 {\
-      if (int a2 = strings[0].find ("}"); a2 != string::npos)\
-      {\
-            for (int i = 0; i < max; ++i)\
-            {\
-               \
-                  strings[i].replace (strings[i].begin() + a1, strings[i].begin() + a2 + 1, to_string (i));\
-            }\
-      }\
-      a1 = strings[0].find ("${");\
+if (int a2 = strings[0].find ("}"); a2 != string::npos)\
+{\
+for (int i = 0; i < max; ++i)\
+{\
+\
+strings[i].replace (strings[i].begin() + a1, strings[i].begin() + a2 + 1, to_string (i));\
+}\
+}\
+a1 = strings[0].find ("${");\
 }\
 \
 string res;\
 \
 for (auto const& i : strings)\
 res += i;\
-      return res;\
+return res;\
 }();// = [&s]->string{return "";}();
 
 #define PROCC(x) PROCC2 (BOOST_PP_STRINGIZE (BOOST_PP_SEQ_ELEM (0, x)), BOOST_PP_SEQ_ELEM (1, x), BOOST_PP_SEQ_ELEM (2, x))//BOOST_PP_SEQ_ELEM (2, x) = [](string s){ \
@@ -37,7 +37,7 @@ res += i;\
 #define NL \n
 #define TB \t
 
-#define DECL(z, n, text) \
+#define DECL_GPU(z, n, text) \
 template <> NL \
 struct gpu <n> NL \
 { NL \
@@ -229,34 +229,39 @@ TB }; NL \
 
 int main (int argc, const char * argv[])
 {
-      file <write> header (argv [1]);
-      header << "#pragma once \n";
-      header << "#include <iostream>\n";
-      header << "#define GPU_COUNT " << GPU_COUNT << "\n\n";
-      header << "template <int>\nstruct gpu;\n\n";
-      header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(GPU_COUNT, DECL, int x));
-
-      return 0;
-
-      
-      PROCC((
-             template <int>                                                                                                   \n
-             struct gpu;                                                                                                   \n\n
-             
-             template <>                                                                                                         \n
-             struct gpu <${i}>                                                                                                   \n
-             {                                                                                                   \n\t
-            static constexpr int fitta = GPU_COUNT;                                                                                                   \n\t
-            static constexpr int count = GPU_COUNT;                                                                                                   \n\t
-            static constexpr uint32_t max_image_dimension_1D = GPU_${i}_MAX_IMAGE_DIMENSION_1D;                                                                                                   \n
-      };\n
-
-             )(GPU_COUNT)
-            (string gpu_class_header))
-      
-
-
-      return 0;
+    file <write> instance_header (argv [1]);
+    instance_header << "#pragma once \n";
+    instance_header << "#include <iostream>\n\n";
+    instance_header << "struct instance {";
+    
+    file <write> gpu_header (argv [2]);
+    gpu_header << "#pragma once \n";
+    gpu_header << "#include <iostream>\n";
+    gpu_header << "#define GPU_COUNT " << GPU_COUNT << "\n\n";
+    gpu_header << "template <int>\nstruct gpu;\n\n";
+    gpu_header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(GPU_COUNT, DECL_GPU, int x));
+    
+    return 0;
+    
+    
+    PROCC((
+           template <int>                                                                                                   \n
+           struct gpu;                                                                                                   \n\n
+           
+           template <>                                                                                                         \n
+           struct gpu <${i}>                                                                                                   \n
+           {                                                                                                   \n\t
+        static constexpr int fitta = GPU_COUNT;                                                                                                   \n\t
+        static constexpr int count = GPU_COUNT;                                                                                                   \n\t
+        static constexpr uint32_t max_image_dimension_1D = GPU_${i}_MAX_IMAGE_DIMENSION_1D;                                                                                                   \n
+    };\n
+           
+           )(GPU_COUNT)
+          (string gpu_class_header))
+    
+    
+    
+    return 0;
 }
 
 

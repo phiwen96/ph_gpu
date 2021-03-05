@@ -103,6 +103,8 @@ void parse_instance_layers (auto& gpu_file)
 }
 void parse_physical_device (auto& gpu_file, vector<VkPhysicalDevice>& physicalDevices)
 {
+    gpu_file << "#define GPU_COUNT " << physicalDevices.size() << "\n";
+    
     for (int i = 0; auto& physicalDevice : physicalDevices)
     {
         
@@ -392,7 +394,9 @@ int main (int argc, const char * argv[])
     
     file <write> instance_file (instance_file_path);
     file <write> gpu_file (gpu_file_path);
-    gpu_file << "#pragma once\n";
+    
+    instance_file << "#pragma once\n\n";
+    gpu_file << "#pragma once\n\n";
     
     
     glfwInit();
@@ -400,22 +404,15 @@ int main (int argc, const char * argv[])
     auto instanceLayers = getInstanceLayers ();
     auto instance = getInstance (instanceExtensions, instanceLayers);
     auto physicalDevices = getPhysicalDevices (instance);
-    gpu_file << "#define GPU_COUNT " << physicalDevices.size() << "\n";
     
     
     
-    [&]{
-        for (auto& i : instanceExtensions)
-            cout << "\t" << i.extensionName << endl;
-        
-        cout << endl;
-        
-        for (auto& i : instanceLayers)
-            cout << "\t" << i.layerName << endl;
-    };
+    
+  
     parse_instance_extensions (instance_file);
+    instance_file << "\n";
     parse_instance_layers (instance_file);
-    parse_physical_device(gpu_file, physicalDevices);
+    parse_physical_device (gpu_file, physicalDevices);
     
     
     

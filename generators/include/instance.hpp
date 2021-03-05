@@ -1,3 +1,5 @@
+#pragma once
+
 #define INSTANCE_EXTENSION_0_NAME VK_KHR_device_group_creation
 #define INSTANCE_EXTENSION_1_NAME VK_KHR_external_fence_capabilities
 #define INSTANCE_EXTENSION_2_NAME VK_KHR_external_memory_capabilities
@@ -10,6 +12,7 @@
 #define INSTANCE_EXTENSION_9_NAME VK_EXT_metal_surface
 #define INSTANCE_EXTENSION_10_NAME VK_EXT_swapchain_colorspace
 #define INSTANCE_EXTENSION_11_NAME VK_MVK_macos_surface
+
 #define INSTANCE_LAYER_0_NAME VK_LAYER_LUNARG_api_dump
 #define INSTANCE_LAYER_1_NAME VK_LAYER_KHRONOS_validation
 #define INSTANCE_LAYER_2_NAME VK_LAYER_LUNARG_device_simulation

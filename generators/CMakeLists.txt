@@ -50,9 +50,9 @@ target_include_directories(gpu_generate_class
 )
 
 
-function(generate target file)
+function(generate target instance_file gpu_file)
 	add_custom_command (
 		TARGET ${target}
 		PRE_BUILD
-		COMMAND $<TARGET_FILE:gpu_generate_class> ${file})
+		COMMAND $<TARGET_FILE:gpu_generate_class> ${instance_file} ${gpu_file})
 endfunction()
