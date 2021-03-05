@@ -8,14 +8,14 @@
 
 #define DECL_GPU_QUEUE(z, queue_index, gpu_index) \
 TB template <> NL \
-TB struct queue <queue_index> NL \
+TB struct queue_family <queue_index> NL \
 TB { NL \
-TB TB static constexpr int index = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _INDEX)))); NL \
-TB TB static constexpr int graphics = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _GRAPHICS)))); NL \
-TB TB static constexpr int compute = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _COMPUTE)))); NL \
-TB TB static constexpr int transfer = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _TRANSFER)))); NL \
-TB TB static constexpr int sparse_binding = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _SPARSE_BINDING)))); NL \
-TB TB static constexpr int protecteed = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _PROTECTED)))); NL \
+TB TB static constexpr int index = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _INDEX)))); NL NL \
+TB TB static constexpr bool graphics = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _GRAPHICS)))); NL \
+TB TB static constexpr bool compute = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _COMPUTE)))); NL \
+TB TB static constexpr bool transfer = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _TRANSFER)))); NL \
+TB TB static constexpr bool sparse_binding = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _SPARSE_BINDING)))); NL \
+TB TB static constexpr bool protecteed = BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, BOOST_PP_CAT (queue_index, _PROTECTED)))); NL \
 TB }; NL NL
 
 
@@ -23,66 +23,67 @@ TB }; NL NL
 template <> NL \
 struct gpu <n> NL \
 { NL \
+TB static constexpr int queueFamilyCount = CAT ((GPU_) (n) (_QUEUE_FAMILY_COUNT)); NL NL \
 TB template <int> NL \
-TB struct queue; NL NL \
-BOOST_PP_REPEAT(CAT ((GPU_) (n) (_QUEUE_FAMILIES_COUNT)), DECL_GPU_QUEUE, n) \
+TB struct queue_family; NL NL \
+BOOST_PP_REPEAT(CAT ((GPU_) (n) (_QUEUE_FAMILY_COUNT)), DECL_GPU_QUEUE, n) \
 TB struct features NL \
 TB { NL \
-TB TB static constexpr uint32_t    robustBufferAccess = CAT ((GPU_) (n) (_ROBUST_BUFFER_ACCESS)); NL \
-TB TB static constexpr uint32_t    fullDrawIndexUint32 = CAT ((GPU_) (n) (_FULL_DRAW_INDEX_UINT_32)); NL \
-TB TB static constexpr uint32_t    imageCubeArray = CAT ((GPU_) (n) (_IMAGE_CUBE_ARRAY)); NL \
-TB TB static constexpr uint32_t    independentBlend = CAT ((GPU_) (n) (_INDEPENDENT_BLEND)); NL \
-TB TB static constexpr uint32_t    geometryShader = CAT ((GPU_) (n) (_GEOMETRY_SHADER)); NL \
-TB TB static constexpr uint32_t    tessellationShader = CAT ((GPU_) (n) (_TESSELLATION_SHADER)); NL \
-TB TB static constexpr uint32_t    sampleRateShading = CAT ((GPU_) (n) (_SAMPLE_RATE_SHADING)); NL \
-TB TB static constexpr uint32_t    dualSrcBlend = CAT ((GPU_) (n) (_DUAL_SRC_BLEND)); NL \
-TB TB static constexpr uint32_t    logicOp = CAT ((GPU_) (n) (_LOGIC_OP)); NL \
-TB TB static constexpr uint32_t    multiDrawIndirect = CAT ((GPU_) (n) (_MULTI_DRAW_INDIRECT)); NL \
-TB TB static constexpr uint32_t    drawIndirectFirstInstance = CAT ((GPU_) (n) (_DRAW_INDIRECT_FIRST_INSTANCE)); NL \
-TB TB static constexpr uint32_t    depthClamp = CAT ((GPU_) (n) (_DEPTH_CLAMP)); NL \
-TB TB static constexpr uint32_t    depthBiasClamp = CAT ((GPU_) (n) (_DEPTH_BIAS_CLAMP)); NL \
-TB TB static constexpr uint32_t    fillModeNonSolid = CAT ((GPU_) (n) (_FILL_MODE_NON_SOLID)); NL \
-TB TB static constexpr uint32_t    depthBounds = CAT ((GPU_) (n) (_DEPTH_BOUNDS)); NL \
-TB TB static constexpr uint32_t    wideLines = CAT ((GPU_) (n) (_WIDE_LINES)); NL \
-TB TB static constexpr uint32_t    largePoints = CAT ((GPU_) (n) (_LARGE_POINTS)); NL \
-TB TB static constexpr uint32_t    alphaToOne = CAT ((GPU_) (n) (_ALPHA_TO_ONE)); NL \
-TB TB static constexpr uint32_t    multiViewport = CAT ((GPU_) (n) (_MULTI_VIEWPORT)); NL \
-TB TB static constexpr uint32_t    samplerAnisotropy = CAT ((GPU_) (n) (_SAMPLER_ANISOTROPY)); NL \
-TB TB static constexpr uint32_t    textureCompressionETC2 = CAT ((GPU_) (n) (_TEXTURE_COMPRESSION_ETC_2)); NL \
-TB TB static constexpr uint32_t    textureCompressionASTC_LDR = CAT ((GPU_) (n) (_TEXTURE_COMPRESSION_ASTC_LDR)); NL \
-TB TB static constexpr uint32_t    textureCompressionBC = CAT ((GPU_) (n) (_TEXTURE_COMPRESSION_BC)); NL \
-TB TB static constexpr uint32_t    occlusionQueryPrecise = CAT ((GPU_) (n) (_OCCLUSION_QUERY_PRECISE)); NL \
-TB TB static constexpr uint32_t    pipelineStatisticsQuery = CAT ((GPU_) (n) (_PIPELINE_STATISTICS_QUERY)); NL \
-TB TB static constexpr uint32_t    vertexPipelineStoresAndAtomics = CAT ((GPU_) (n) (_VERTEX_PIPELINE_STORES_AND_ATOMICS)); NL \
-TB TB static constexpr uint32_t    fragmentStoresAndAtomics = CAT ((GPU_) (n) (_FRAGMENT_STORES_AND_ATOMICS)); NL \
-TB TB static constexpr uint32_t    shaderTessellationAndGeometryPointSize = CAT ((GPU_) (n) (_SHADER_TESSELLATION_AND_GEOMETRY_POINT_SIZE)); NL \
-TB TB static constexpr uint32_t    shaderImageGatherExtended = CAT ((GPU_) (n) (_SHADER_IMAGE_GATHER_EXTENDED)); NL \
-TB TB static constexpr uint32_t    shaderStorageImageExtendedFormats = CAT ((GPU_) (n) (_SHADER_STORAGE_IMAGE_EXTENDED_FORMATS)); NL \
-TB TB static constexpr uint32_t    shaderStorageImageMultisample = CAT ((GPU_) (n) (_SHADER_STORAGE_IMAGE_MULTISAMPLE)); NL \
-TB TB static constexpr uint32_t    shaderStorageImageReadWithoutFormat = CAT ((GPU_) (n) (_SHADER_STORAGE_IMAGE_READ_WITHOUT_FORMAT)); NL \
-TB TB static constexpr uint32_t    shaderStorageImageWriteWithoutFormat = CAT ((GPU_) (n) (_SHADER_STORAGE_IMAGE_WRITE_WITHOUT_FORMAT)); NL \
-TB TB static constexpr uint32_t    shaderUniformBufferArrayDynamicIndexing = CAT ((GPU_) (n) (_SHADER_UNIFORM_BUFFER_ARRAY_DYNAMIC_INDEXING)); NL \
-TB TB static constexpr uint32_t    shaderSampledImageArrayDynamicIndexing = CAT ((GPU_) (n) (_SHADER_SAMPLED_IMAGE_ARRAY_DYNAMIC_INDEXING)); NL \
-TB TB static constexpr uint32_t    shaderStorageBufferArrayDynamicIndexing = CAT ((GPU_) (n) (_SHADER_STORAGE_BUFFER_ARRAY_DYNAMIC_INDEXING)); NL \
-TB TB static constexpr uint32_t    shaderStorageImageArrayDynamicIndexing = CAT ((GPU_) (n) (_SHADER_STORAGE_IMAGE_ARRAY_DYNAMIC_INDEXING)); NL \
-TB TB static constexpr uint32_t    shaderClipDistance = CAT ((GPU_) (n) (_SHADER_CLIP_DISTANCE)); NL \
-TB TB static constexpr uint32_t    shaderCullDistance = CAT ((GPU_) (n) (_SHADER_CULL_DISTANCE)); NL \
-TB TB static constexpr uint32_t    shaderFloat64 = CAT ((GPU_) (n) (_SHADER_FLOAT_64)); NL \
-TB TB static constexpr uint32_t    shaderInt64 = CAT ((GPU_) (n) (_SHADER_INT_64)); NL \
-TB TB static constexpr uint32_t    shaderInt16 = CAT ((GPU_) (n) (_SHADER_INT_16)); NL \
-TB TB static constexpr uint32_t    shaderResourceResidency = CAT ((GPU_) (n) (_SHADER_RESOURCE_RESIDENCY)); NL \
-TB TB static constexpr uint32_t    shaderResourceMinLod = CAT ((GPU_) (n) (_SHADER_RESOURCE_MIN_LOD)); NL \
-TB TB static constexpr uint32_t    sparseBinding = CAT ((GPU_) (n) (_SPARSE_BINDING)); NL \
-TB TB static constexpr uint32_t    sparseResidencyBuffer = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_BUFFER)); NL \
-TB TB static constexpr uint32_t    sparseResidencyImage2D = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_IMAGE_2D)); NL \
-TB TB static constexpr uint32_t    sparseResidencyImage3D = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_IMAGE_3D)); NL \
-TB TB static constexpr uint32_t    sparseResidency2Samples = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_2SAMPLES)); NL \
-TB TB static constexpr uint32_t    sparseResidency4Samples = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_4SAMPLES)); NL \
-TB TB static constexpr uint32_t    sparseResidency8Samples = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_8SAMPLES)); NL \
-TB TB static constexpr uint32_t    sparseResidency16Samples = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_16SAMPLES)); NL \
-TB TB static constexpr uint32_t    sparseResidencyAliased = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_ALIASED)); NL \
-TB TB static constexpr uint32_t    variableMultisampleRate = CAT ((GPU_) (n) (_VARIABLE_MULTISAMPLE_RATE)); NL \
-TB TB static constexpr uint32_t    inheritedQueries = CAT ((GPU_) (n) (_INHERITED_QUERIES)); NL \
+TB TB static constexpr bool    robustBufferAccess = CAT ((GPU_) (n) (_ROBUST_BUFFER_ACCESS)); NL \
+TB TB static constexpr bool    fullDrawIndexUint32 = CAT ((GPU_) (n) (_FULL_DRAW_INDEX_UINT_32)); NL \
+TB TB static constexpr bool    imageCubeArray = CAT ((GPU_) (n) (_IMAGE_CUBE_ARRAY)); NL \
+TB TB static constexpr bool    independentBlend = CAT ((GPU_) (n) (_INDEPENDENT_BLEND)); NL \
+TB TB static constexpr bool    geometryShader = CAT ((GPU_) (n) (_GEOMETRY_SHADER)); NL \
+TB TB static constexpr bool    tessellationShader = CAT ((GPU_) (n) (_TESSELLATION_SHADER)); NL \
+TB TB static constexpr bool    sampleRateShading = CAT ((GPU_) (n) (_SAMPLE_RATE_SHADING)); NL \
+TB TB static constexpr bool    dualSrcBlend = CAT ((GPU_) (n) (_DUAL_SRC_BLEND)); NL \
+TB TB static constexpr bool    logicOp = CAT ((GPU_) (n) (_LOGIC_OP)); NL \
+TB TB static constexpr bool    multiDrawIndirect = CAT ((GPU_) (n) (_MULTI_DRAW_INDIRECT)); NL \
+TB TB static constexpr bool    drawIndirectFirstInstance = CAT ((GPU_) (n) (_DRAW_INDIRECT_FIRST_INSTANCE)); NL \
+TB TB static constexpr bool    depthClamp = CAT ((GPU_) (n) (_DEPTH_CLAMP)); NL \
+TB TB static constexpr bool    depthBiasClamp = CAT ((GPU_) (n) (_DEPTH_BIAS_CLAMP)); NL \
+TB TB static constexpr bool    fillModeNonSolid = CAT ((GPU_) (n) (_FILL_MODE_NON_SOLID)); NL \
+TB TB static constexpr bool    depthBounds = CAT ((GPU_) (n) (_DEPTH_BOUNDS)); NL \
+TB TB static constexpr bool    wideLines = CAT ((GPU_) (n) (_WIDE_LINES)); NL \
+TB TB static constexpr bool    largePoints = CAT ((GPU_) (n) (_LARGE_POINTS)); NL \
+TB TB static constexpr bool    alphaToOne = CAT ((GPU_) (n) (_ALPHA_TO_ONE)); NL \
+TB TB static constexpr bool    multiViewport = CAT ((GPU_) (n) (_MULTI_VIEWPORT)); NL \
+TB TB static constexpr bool    samplerAnisotropy = CAT ((GPU_) (n) (_SAMPLER_ANISOTROPY)); NL \
+TB TB static constexpr bool    textureCompressionETC2 = CAT ((GPU_) (n) (_TEXTURE_COMPRESSION_ETC_2)); NL \
+TB TB static constexpr bool    textureCompressionASTC_LDR = CAT ((GPU_) (n) (_TEXTURE_COMPRESSION_ASTC_LDR)); NL \
+TB TB static constexpr bool    textureCompressionBC = CAT ((GPU_) (n) (_TEXTURE_COMPRESSION_BC)); NL \
+TB TB static constexpr bool    occlusionQueryPrecise = CAT ((GPU_) (n) (_OCCLUSION_QUERY_PRECISE)); NL \
+TB TB static constexpr bool    pipelineStatisticsQuery = CAT ((GPU_) (n) (_PIPELINE_STATISTICS_QUERY)); NL \
+TB TB static constexpr bool    vertexPipelineStoresAndAtomics = CAT ((GPU_) (n) (_VERTEX_PIPELINE_STORES_AND_ATOMICS)); NL \
+TB TB static constexpr bool    fragmentStoresAndAtomics = CAT ((GPU_) (n) (_FRAGMENT_STORES_AND_ATOMICS)); NL \
+TB TB static constexpr bool    shaderTessellationAndGeometryPointSize = CAT ((GPU_) (n) (_SHADER_TESSELLATION_AND_GEOMETRY_POINT_SIZE)); NL \
+TB TB static constexpr bool    shaderImageGatherExtended = CAT ((GPU_) (n) (_SHADER_IMAGE_GATHER_EXTENDED)); NL \
+TB TB static constexpr bool    shaderStorageImageExtendedFormats = CAT ((GPU_) (n) (_SHADER_STORAGE_IMAGE_EXTENDED_FORMATS)); NL \
+TB TB static constexpr bool    shaderStorageImageMultisample = CAT ((GPU_) (n) (_SHADER_STORAGE_IMAGE_MULTISAMPLE)); NL \
+TB TB static constexpr bool    shaderStorageImageReadWithoutFormat = CAT ((GPU_) (n) (_SHADER_STORAGE_IMAGE_READ_WITHOUT_FORMAT)); NL \
+TB TB static constexpr bool    shaderStorageImageWriteWithoutFormat = CAT ((GPU_) (n) (_SHADER_STORAGE_IMAGE_WRITE_WITHOUT_FORMAT)); NL \
+TB TB static constexpr bool    shaderUniformBufferArrayDynamicIndexing = CAT ((GPU_) (n) (_SHADER_UNIFORM_BUFFER_ARRAY_DYNAMIC_INDEXING)); NL \
+TB TB static constexpr bool    shaderSampledImageArrayDynamicIndexing = CAT ((GPU_) (n) (_SHADER_SAMPLED_IMAGE_ARRAY_DYNAMIC_INDEXING)); NL \
+TB TB static constexpr bool    shaderStorageBufferArrayDynamicIndexing = CAT ((GPU_) (n) (_SHADER_STORAGE_BUFFER_ARRAY_DYNAMIC_INDEXING)); NL \
+TB TB static constexpr bool    shaderStorageImageArrayDynamicIndexing = CAT ((GPU_) (n) (_SHADER_STORAGE_IMAGE_ARRAY_DYNAMIC_INDEXING)); NL \
+TB TB static constexpr bool    shaderClipDistance = CAT ((GPU_) (n) (_SHADER_CLIP_DISTANCE)); NL \
+TB TB static constexpr bool    shaderCullDistance = CAT ((GPU_) (n) (_SHADER_CULL_DISTANCE)); NL \
+TB TB static constexpr bool    shaderFloat64 = CAT ((GPU_) (n) (_SHADER_FLOAT_64)); NL \
+TB TB static constexpr bool    shaderInt64 = CAT ((GPU_) (n) (_SHADER_INT_64)); NL \
+TB TB static constexpr bool    shaderInt16 = CAT ((GPU_) (n) (_SHADER_INT_16)); NL \
+TB TB static constexpr bool    shaderResourceResidency = CAT ((GPU_) (n) (_SHADER_RESOURCE_RESIDENCY)); NL \
+TB TB static constexpr bool    shaderResourceMinLod = CAT ((GPU_) (n) (_SHADER_RESOURCE_MIN_LOD)); NL \
+TB TB static constexpr bool    sparseBinding = CAT ((GPU_) (n) (_SPARSE_BINDING)); NL \
+TB TB static constexpr bool    sparseResidencyBuffer = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_BUFFER)); NL \
+TB TB static constexpr bool    sparseResidencyImage2D = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_IMAGE_2D)); NL \
+TB TB static constexpr bool    sparseResidencyImage3D = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_IMAGE_3D)); NL \
+TB TB static constexpr bool    sparseResidency2Samples = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_2SAMPLES)); NL \
+TB TB static constexpr bool    sparseResidency4Samples = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_4SAMPLES)); NL \
+TB TB static constexpr bool    sparseResidency8Samples = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_8SAMPLES)); NL \
+TB TB static constexpr bool    sparseResidency16Samples = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_16SAMPLES)); NL \
+TB TB static constexpr bool    sparseResidencyAliased = CAT ((GPU_) (n) (_SPARSE_RESIDENCY_ALIASED)); NL \
+TB TB static constexpr bool    variableMultisampleRate = CAT ((GPU_) (n) (_VARIABLE_MULTISAMPLE_RATE)); NL \
+TB TB static constexpr bool    inheritedQueries = CAT ((GPU_) (n) (_INHERITED_QUERIES)); NL \
 TB }; NL NL \
 \
 \

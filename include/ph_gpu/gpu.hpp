@@ -8,110 +8,116 @@ struct gpu;
 template <> 
  struct gpu <0> 
  { 
+ 	 static constexpr int queueFamilyCount = 4; 
+ 
  	 template <int> 
- 	 struct queue; 
+ 	 struct queue_family; 
  
  	 template <> 
- 	 struct queue <0> 
+ 	 struct queue_family <0> 
  	 { 
  	 	 static constexpr int index = 0; 
- 	 	 static constexpr int graphics = 1; 
- 	 	 static constexpr int compute = 1; 
- 	 	 static constexpr int transfer = 1; 
- 	 	 static constexpr int sparse_binding = 0; 
- 	 	 static constexpr int protecteed = 0; 
+ 
+ 	 	 static constexpr bool graphics = 1; 
+ 	 	 static constexpr bool compute = 1; 
+ 	 	 static constexpr bool transfer = 1; 
+ 	 	 static constexpr bool sparse_binding = 0; 
+ 	 	 static constexpr bool protecteed = 0; 
  	 }; 
  
  	 template <> 
- 	 struct queue <1> 
+ 	 struct queue_family <1> 
  	 { 
  	 	 static constexpr int index = 1; 
- 	 	 static constexpr int graphics = 1; 
- 	 	 static constexpr int compute = 1; 
- 	 	 static constexpr int transfer = 1; 
- 	 	 static constexpr int sparse_binding = 0; 
- 	 	 static constexpr int protecteed = 0; 
+ 
+ 	 	 static constexpr bool graphics = 1; 
+ 	 	 static constexpr bool compute = 1; 
+ 	 	 static constexpr bool transfer = 1; 
+ 	 	 static constexpr bool sparse_binding = 0; 
+ 	 	 static constexpr bool protecteed = 0; 
  	 }; 
  
  	 template <> 
- 	 struct queue <2> 
+ 	 struct queue_family <2> 
  	 { 
  	 	 static constexpr int index = 2; 
- 	 	 static constexpr int graphics = 1; 
- 	 	 static constexpr int compute = 1; 
- 	 	 static constexpr int transfer = 1; 
- 	 	 static constexpr int sparse_binding = 0; 
- 	 	 static constexpr int protecteed = 0; 
+ 
+ 	 	 static constexpr bool graphics = 1; 
+ 	 	 static constexpr bool compute = 1; 
+ 	 	 static constexpr bool transfer = 1; 
+ 	 	 static constexpr bool sparse_binding = 0; 
+ 	 	 static constexpr bool protecteed = 0; 
  	 }; 
  
  	 template <> 
- 	 struct queue <3> 
+ 	 struct queue_family <3> 
  	 { 
  	 	 static constexpr int index = 3; 
- 	 	 static constexpr int graphics = 1; 
- 	 	 static constexpr int compute = 1; 
- 	 	 static constexpr int transfer = 1; 
- 	 	 static constexpr int sparse_binding = 0; 
- 	 	 static constexpr int protecteed = 0; 
+ 
+ 	 	 static constexpr bool graphics = 1; 
+ 	 	 static constexpr bool compute = 1; 
+ 	 	 static constexpr bool transfer = 1; 
+ 	 	 static constexpr bool sparse_binding = 0; 
+ 	 	 static constexpr bool protecteed = 0; 
  	 }; 
  
  	 struct features 
  	 { 
- 	 	 static constexpr uint32_t robustBufferAccess = 1; 
- 	 	 static constexpr uint32_t fullDrawIndexUint32 = 1; 
- 	 	 static constexpr uint32_t imageCubeArray = 1; 
- 	 	 static constexpr uint32_t independentBlend = 1; 
- 	 	 static constexpr uint32_t geometryShader = 0; 
- 	 	 static constexpr uint32_t tessellationShader = 1; 
- 	 	 static constexpr uint32_t sampleRateShading = 1; 
- 	 	 static constexpr uint32_t dualSrcBlend = 1; 
- 	 	 static constexpr uint32_t logicOp = 0; 
- 	 	 static constexpr uint32_t multiDrawIndirect = 1; 
- 	 	 static constexpr uint32_t drawIndirectFirstInstance = 1; 
- 	 	 static constexpr uint32_t depthClamp = 1; 
- 	 	 static constexpr uint32_t depthBiasClamp = 1; 
- 	 	 static constexpr uint32_t fillModeNonSolid = 1; 
- 	 	 static constexpr uint32_t depthBounds = 0; 
- 	 	 static constexpr uint32_t wideLines = 0; 
- 	 	 static constexpr uint32_t largePoints = 1; 
- 	 	 static constexpr uint32_t alphaToOne = 1; 
- 	 	 static constexpr uint32_t multiViewport = 1; 
- 	 	 static constexpr uint32_t samplerAnisotropy = 1; 
- 	 	 static constexpr uint32_t textureCompressionETC2 = 0; 
- 	 	 static constexpr uint32_t textureCompressionASTC_LDR = 0; 
- 	 	 static constexpr uint32_t textureCompressionBC = 1; 
- 	 	 static constexpr uint32_t occlusionQueryPrecise = 1; 
- 	 	 static constexpr uint32_t pipelineStatisticsQuery = 0; 
- 	 	 static constexpr uint32_t vertexPipelineStoresAndAtomics = 1; 
- 	 	 static constexpr uint32_t fragmentStoresAndAtomics = 1; 
- 	 	 static constexpr uint32_t shaderTessellationAndGeometryPointSize = 1; 
- 	 	 static constexpr uint32_t shaderImageGatherExtended = 1; 
- 	 	 static constexpr uint32_t shaderStorageImageExtendedFormats = 1; 
- 	 	 static constexpr uint32_t shaderStorageImageMultisample = 0; 
- 	 	 static constexpr uint32_t shaderStorageImageReadWithoutFormat = 1; 
- 	 	 static constexpr uint32_t shaderStorageImageWriteWithoutFormat = 1; 
- 	 	 static constexpr uint32_t shaderUniformBufferArrayDynamicIndexing = 1; 
- 	 	 static constexpr uint32_t shaderSampledImageArrayDynamicIndexing = 1; 
- 	 	 static constexpr uint32_t shaderStorageBufferArrayDynamicIndexing = 1; 
- 	 	 static constexpr uint32_t shaderStorageImageArrayDynamicIndexing = 1; 
- 	 	 static constexpr uint32_t shaderClipDistance = 1; 
- 	 	 static constexpr uint32_t shaderCullDistance = 0; 
- 	 	 static constexpr uint32_t shaderFloat64 = 0; 
- 	 	 static constexpr uint32_t shaderInt64 = 0; 
- 	 	 static constexpr uint32_t shaderInt16 = 1; 
- 	 	 static constexpr uint32_t shaderResourceResidency = 0; 
- 	 	 static constexpr uint32_t shaderResourceMinLod = 1; 
- 	 	 static constexpr uint32_t sparseBinding = 0; 
- 	 	 static constexpr uint32_t sparseResidencyBuffer = 0; 
- 	 	 static constexpr uint32_t sparseResidencyImage2D = 0; 
- 	 	 static constexpr uint32_t sparseResidencyImage3D = 0; 
- 	 	 static constexpr uint32_t sparseResidency2Samples = 0; 
- 	 	 static constexpr uint32_t sparseResidency4Samples = 0; 
- 	 	 static constexpr uint32_t sparseResidency8Samples = 0; 
- 	 	 static constexpr uint32_t sparseResidency16Samples = 0; 
- 	 	 static constexpr uint32_t sparseResidencyAliased = 0; 
- 	 	 static constexpr uint32_t variableMultisampleRate = 0; 
- 	 	 static constexpr uint32_t inheritedQueries = 1; 
+ 	 	 static constexpr bool robustBufferAccess = 1; 
+ 	 	 static constexpr bool fullDrawIndexUint32 = 1; 
+ 	 	 static constexpr bool imageCubeArray = 1; 
+ 	 	 static constexpr bool independentBlend = 1; 
+ 	 	 static constexpr bool geometryShader = 0; 
+ 	 	 static constexpr bool tessellationShader = 1; 
+ 	 	 static constexpr bool sampleRateShading = 1; 
+ 	 	 static constexpr bool dualSrcBlend = 1; 
+ 	 	 static constexpr bool logicOp = 0; 
+ 	 	 static constexpr bool multiDrawIndirect = 1; 
+ 	 	 static constexpr bool drawIndirectFirstInstance = 1; 
+ 	 	 static constexpr bool depthClamp = 1; 
+ 	 	 static constexpr bool depthBiasClamp = 1; 
+ 	 	 static constexpr bool fillModeNonSolid = 1; 
+ 	 	 static constexpr bool depthBounds = 0; 
+ 	 	 static constexpr bool wideLines = 0; 
+ 	 	 static constexpr bool largePoints = 1; 
+ 	 	 static constexpr bool alphaToOne = 1; 
+ 	 	 static constexpr bool multiViewport = 1; 
+ 	 	 static constexpr bool samplerAnisotropy = 1; 
+ 	 	 static constexpr bool textureCompressionETC2 = 0; 
+ 	 	 static constexpr bool textureCompressionASTC_LDR = 0; 
+ 	 	 static constexpr bool textureCompressionBC = 1; 
+ 	 	 static constexpr bool occlusionQueryPrecise = 1; 
+ 	 	 static constexpr bool pipelineStatisticsQuery = 0; 
+ 	 	 static constexpr bool vertexPipelineStoresAndAtomics = 1; 
+ 	 	 static constexpr bool fragmentStoresAndAtomics = 1; 
+ 	 	 static constexpr bool shaderTessellationAndGeometryPointSize = 1; 
+ 	 	 static constexpr bool shaderImageGatherExtended = 1; 
+ 	 	 static constexpr bool shaderStorageImageExtendedFormats = 1; 
+ 	 	 static constexpr bool shaderStorageImageMultisample = 0; 
+ 	 	 static constexpr bool shaderStorageImageReadWithoutFormat = 1; 
+ 	 	 static constexpr bool shaderStorageImageWriteWithoutFormat = 1; 
+ 	 	 static constexpr bool shaderUniformBufferArrayDynamicIndexing = 1; 
+ 	 	 static constexpr bool shaderSampledImageArrayDynamicIndexing = 1; 
+ 	 	 static constexpr bool shaderStorageBufferArrayDynamicIndexing = 1; 
+ 	 	 static constexpr bool shaderStorageImageArrayDynamicIndexing = 1; 
+ 	 	 static constexpr bool shaderClipDistance = 1; 
+ 	 	 static constexpr bool shaderCullDistance = 0; 
+ 	 	 static constexpr bool shaderFloat64 = 0; 
+ 	 	 static constexpr bool shaderInt64 = 0; 
+ 	 	 static constexpr bool shaderInt16 = 1; 
+ 	 	 static constexpr bool shaderResourceResidency = 0; 
+ 	 	 static constexpr bool shaderResourceMinLod = 1; 
+ 	 	 static constexpr bool sparseBinding = 0; 
+ 	 	 static constexpr bool sparseResidencyBuffer = 0; 
+ 	 	 static constexpr bool sparseResidencyImage2D = 0; 
+ 	 	 static constexpr bool sparseResidencyImage3D = 0; 
+ 	 	 static constexpr bool sparseResidency2Samples = 0; 
+ 	 	 static constexpr bool sparseResidency4Samples = 0; 
+ 	 	 static constexpr bool sparseResidency8Samples = 0; 
+ 	 	 static constexpr bool sparseResidency16Samples = 0; 
+ 	 	 static constexpr bool sparseResidencyAliased = 0; 
+ 	 	 static constexpr bool variableMultisampleRate = 0; 
+ 	 	 static constexpr bool inheritedQueries = 1; 
  	 }; 
  
  	 struct properties 

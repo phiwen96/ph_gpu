@@ -113,7 +113,7 @@ void parse_physical_devices (auto& gpu_file, vector<VkPhysicalDevice>& physicalD
         
         vkGetPhysicalDeviceQueueFamilyProperties (physicalDevice, &queue_families_count, nullptr);
         
-        gpu_file << DEF (GPU_) << gpu << "_QUEUE_FAMILIES_COUNT " << queue_families_count << " \n\n";
+        gpu_file << DEF (GPU_) << gpu << "_QUEUE_FAMILY_COUNT " << queue_families_count << " \n\n";
         
         vector <VkQueueFamilyProperties> queueFamilies (queue_families_count);
         
