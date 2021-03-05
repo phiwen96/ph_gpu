@@ -16,6 +16,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 
 	set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 
+	find_package (Boost 1.75 REQUIRED)
 	find_package(Vulkan REQUIRED)
 	find_package(glfw3 REQUIRED)
 	find_package(glm REQUIRED)

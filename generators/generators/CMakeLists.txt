@@ -35,16 +35,20 @@ target_link_libraries(gpu_gen_definitions
 PRIVATE 
 # /Users/pw/vulkansdk/MoltenVK/dylib/macOS/libMoltenVK.dylib 
 # /Users/pw/vulkansdk/macOS/lib/libVkLayer_khronos_validation.dylib
-/Users/pw/vulkansdk/macOS/lib/libvulkan.1.2.170.dylib
-/Users/pw/vulkansdk/macOS/lib/libvulkan.1.dylib
+# /Users/pw/vulkansdk/macOS/lib/libvulkan.1.2.170.dylib
+# /Users/pw/vulkansdk/macOS/lib/libvulkan.1.dylib
+${Boost_LIBRARIES}
+${Vulkan_LIBRARIES}
 glfw
 )
 
 target_include_directories(gpu_gen_definitions PRIVATE 
 include
 # /Users/pw/vulkansdk/macOS/include
-/Users/pw/vulkansdk/MoltenVK/include 
+# /Users/pw/vulkansdk/MoltenVK/include 
+${Boost_INCLUDE_DIRS}
+${Vulkan_INCLUDE_DIRS}
 glfw
-/usr/local/Cellar/boost/1.75.0_1/include
+# /usr/local/Cellar/boost/1.75.0_1/include
 ${CMAKE_CURRENT_BINARY_DIR}
 )
