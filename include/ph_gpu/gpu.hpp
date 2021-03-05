@@ -8,6 +8,33 @@ struct gpu;
 template <> 
  struct gpu <0> 
  { 
+ 	 template <int> 
+ 	 struct queue; 
+ 
+ 	 template <> 
+ 	 struct queue <0> 
+ 	 { 
+ 	 	 static constexpr int index = GPU_0_QUEUE_FAMILY_0; 
+ 	 }; 
+ 
+ 	 template <> 
+ 	 struct queue <1> 
+ 	 { 
+ 	 	 static constexpr int index = GPU_0_QUEUE_FAMILY_1; 
+ 	 }; 
+ 
+ 	 template <> 
+ 	 struct queue <2> 
+ 	 { 
+ 	 	 static constexpr int index = GPU_0_QUEUE_FAMILY_2; 
+ 	 }; 
+ 
+ 	 template <> 
+ 	 struct queue <3> 
+ 	 { 
+ 	 	 static constexpr int index = GPU_0_QUEUE_FAMILY_3; 
+ 	 }; 
+ 
  	 struct features 
  	 { 
  	 	 static constexpr uint32_t robustBufferAccess = 1; 

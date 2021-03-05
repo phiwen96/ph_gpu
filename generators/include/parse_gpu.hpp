@@ -6,10 +6,21 @@
 #define NL \n
 #define TB \t
 
+#define DECL_GPU_QUEUE(z, queue_index, gpu_index) \
+TB template <> NL \
+TB struct queue <queue_index> NL \
+TB { NL \
+TB TB static constexpr int index = BOOST_PP_CAT (BOOST_PP_CAT (GPU_, BOOST_PP_CAT (gpu_index, BOOST_PP_CAT (_QUEUE_FAMILY_, queue_index))); NL \
+TB }; NL NL
+
+
 #define DECL_GPU(z, n, text) \
 template <> NL \
 struct gpu <n> NL \
 { NL \
+TB template <int> NL \
+TB struct queue; NL NL \
+BOOST_PP_REPEAT(CAT ((GPU_) (n) (_QUEUE_FAMILIES_COUNT)), DECL_GPU_QUEUE, n) \
 TB struct features NL \
 TB { NL \
 TB TB static constexpr uint32_t    robustBufferAccess = CAT ((GPU_) (n) (_ROBUST_BUFFER_ACCESS)); NL \

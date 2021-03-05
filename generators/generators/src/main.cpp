@@ -105,27 +105,27 @@ void parse_instance_layers (auto& gpu_file)
         ++i;
     }
 }
-void parse_physical_device (auto& gpu_file, vector<VkPhysicalDevice>& physicalDevices)
+void parse_physical_devices (auto& gpu_file, vector<VkPhysicalDevice>& physicalDevices)
 {
-    gpu_file << "#define GPU_COUNT " << physicalDevices.size() << "\n";
-    
-    for (int i = 0; auto& physicalDevice : physicalDevices)
+    auto parse_physical_device_queues = [&gpu_file](int gpu, VkPhysicalDevice& physicalDevice)
     {
-        
         uint32_t queue_families_count = 0;
         
         vkGetPhysicalDeviceQueueFamilyProperties (physicalDevice, &queue_families_count, nullptr);
         
-        gpu_file << DEF (GPU_) << i << "_QUEUE_FAMILIES_COUNT " << queue_families_count << " \n";
+        gpu_file << DEF (GPU_) << gpu << "_QUEUE_FAMILIES_COUNT " << queue_families_count << " \n\n";
         
         vector <VkQueueFamilyProperties> queueFamilies (queue_families_count);
-        for (int j = 0; auto const& queueFamily : queueFamilies)
+        
+        vkGetPhysicalDeviceQueueFamilyProperties (physicalDevice, &queue_families_count, queueFamilies.data());
+        
+        for (int queueIndex = 0; auto const& queueFamily : queueFamilies)
         {
-            string graphics = DEF (GPU_) + to_string (i) + "_QUEUE_FAMILY_" + to_string (j) + "_GRAPHICS ";
-            string compute = DEF (GPU_) + to_string (i) + "_QUEUE_FAMILY_" + to_string (j) + "_COMPUTE ";
-            string transfer = DEF (GPU_) + to_string (i) + "_QUEUE_FAMILY_" + to_string (j) + "_TRANSFER ";
-            string sparse_binding = DEF (GPU_) + to_string (i) + "_QUEUE_FAMILY_" + to_string (j) + "_SPARSE_BINDING ";
-            string protect = DEF (GPU_) + to_string (i) + "_QUEUE_FAMILY_" + to_string (j) + "_PROTECTED ";
+            string graphics = DEF (GPU_) + to_string (gpu) + "_QUEUE_FAMILY_" + to_string (queueIndex) + "_GRAPHICS ";
+            string compute = DEF (GPU_) + to_string (gpu) + "_QUEUE_FAMILY_" + to_string (queueIndex) + "_COMPUTE ";
+            string transfer = DEF (GPU_) + to_string (gpu) + "_QUEUE_FAMILY_" + to_string (queueIndex) + "_TRANSFER ";
+            string sparse_binding = DEF (GPU_) + to_string (gpu) + "_QUEUE_FAMILY_" + to_string (queueIndex) + "_SPARSE_BINDING ";
+            string protect = DEF (GPU_) + to_string (gpu) + "_QUEUE_FAMILY_" + to_string (queueIndex) + "_PROTECTED ";
             
             
             if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
@@ -168,14 +168,22 @@ void parse_physical_device (auto& gpu_file, vector<VkPhysicalDevice>& physicalDe
                 protect += "0 \n";
             }
             
-            
+            gpu_file << DEF (GPU_) << gpu << "_QUEUE_FAMILY_" << queueIndex << "_INDEX " << queueIndex << "\n";
             gpu_file << graphics;
             gpu_file << compute;
             gpu_file << transfer;
             gpu_file << sparse_binding;
             gpu_file << protect;
-            ++j;
+            gpu_file << "\n";
+            ++queueIndex;
         }
+    };
+    
+    gpu_file << "#define GPU_COUNT " << physicalDevices.size() << "\n";
+    
+    for (int i = 0; auto& physicalDevice : physicalDevices)
+    {
+        parse_physical_device_queues (i, physicalDevice);
         
         VkPhysicalDeviceProperties props = getPhysicalDeviceProperties (physicalDevice);
         VkPhysicalDeviceFeatures feats = getPhysicalDeviceFeatures (physicalDevice);
@@ -416,7 +424,7 @@ int main (int argc, const char * argv[])
     parse_instance_extensions (instance_file);
     instance_file << "\n";
     parse_instance_layers (instance_file);
-    parse_physical_device (gpu_file, physicalDevices);
+    parse_physical_devices (gpu_file, physicalDevices);
     
     
     
