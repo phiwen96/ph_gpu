@@ -48,6 +48,7 @@ int main (int argc, const char * argv[])
     file <write> instance_header (argv [1]);
     instance_header << "#pragma once \n";
     instance_header << "#include <iostream>\n\n";
+    instance_header << "namespace " << PROJECT_NAME << " {\n\n";
     
     instance_header << "struct instance \n{\n";
         instance_header << "\t\tstatic constexpr int extensionCount = " << INSTANCE_EXTENSION_COUNT << ";\n";
@@ -68,6 +69,7 @@ int main (int argc, const char * argv[])
         instance_header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(INSTANCE_LAYER_COUNT, DECL_INSTANCE_LAYERS, int x));
     
     instance_header << "};\n";
+    instance_header << "}\n";
     
     
     
@@ -75,8 +77,10 @@ int main (int argc, const char * argv[])
     gpu_header << "#pragma once \n";
     gpu_header << "#include <iostream>\n";
     gpu_header << "#define GPU_COUNT " << GPU_COUNT << "\n\n";
+    gpu_header << "namespace " << PROJECT_NAME << " {\n\n";
     gpu_header << "template <int>\nstruct gpu;\n\n";
     gpu_header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(GPU_COUNT, DECL_GPU, int x));
+    gpu_header << "}\n";
     
     return 0;
     

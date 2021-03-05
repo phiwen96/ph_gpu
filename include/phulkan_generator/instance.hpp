@@ -1,6 +1,8 @@
 #pragma once 
 #include <iostream>
 
+namespace phulkan_generator {
+
 struct instance 
 {
 		static constexpr int extensionCount = 12;
@@ -93,3 +95,4 @@ struct instance
  	 	 static constexpr char name [] = "VK_LAYER_KHRONOS_synchronization2"; 
  	 }; 
 };
+}

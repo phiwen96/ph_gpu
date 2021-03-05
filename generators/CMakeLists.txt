@@ -29,6 +29,7 @@ generate (gpu_generate_class
 
 target_compile_definitions (gpu_generate_class 
 	PRIVATE 
+	PROJECT_NAME="${PROJECT_NAME}"
 	GENERATED_INSTANCE_FILE="${GENERATED_INSTANCE_FILE}" 
 	GENERATED_GPU_FILE="${GENERATED_GPU_FILE}")
 

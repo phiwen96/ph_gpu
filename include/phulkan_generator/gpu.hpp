@@ -2,6 +2,8 @@
 #include <iostream>
 #define GPU_COUNT 1
 
+namespace phulkan_generator {
+
 template <int>
 struct gpu;
 
@@ -240,3 +242,4 @@ template <>
  	 }; 
  }; 
  
+}
