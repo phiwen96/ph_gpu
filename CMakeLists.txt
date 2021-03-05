@@ -27,7 +27,7 @@ endif()
 
 add_subdirectory(generators)
 
-add_library (phulkan_generator ${SOURCE_LIST} ${HEADER_LIST})
+add_library (phulkan_generator SHARED ${SOURCE_LIST} ${HEADER_LIST})
 
 generate (phulkan_generator ${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator/instance.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator/gpu.hpp)
 
