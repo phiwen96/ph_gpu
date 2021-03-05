@@ -14,7 +14,7 @@ TB }; NL
 
 #define DECL_INSTANCE_LAYERS(z, n, text) \
 TB template <> NL \
-TB struct layers <n> NL \
+TB struct layer <n> NL \
 TB { NL \
 TB TB static constexpr char name [] = CAT ((INSTANCE_LAYER_) (n) (_NAME)); NL \
 TB }; NL

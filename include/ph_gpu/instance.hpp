@@ -3,8 +3,8 @@
 
 struct instance 
 {
-		static constexpr int extension_count = 12;
-		static constexpr int layer_count = 4;
+		static constexpr int extensionCount = 12;
+		static constexpr int layerCount = 4;
 
 		template <int>
 		struct extension;
@@ -12,7 +12,7 @@ struct instance
 		template <int>
 		struct layer;
 
-	struct layers 
+	struct layer 
 	{
 	};
 	 template <> 
@@ -76,22 +76,22 @@ struct instance
  	 	 static constexpr char name [] = "VK_MVK_macos_surface"; 
  	 }; 
 	 template <> 
- 	 struct layers <0> 
+ 	 struct layer <0> 
  	 { 
  	 	 static constexpr char name [] = "VK_LAYER_LUNARG_api_dump"; 
  	 }; 
  	 template <> 
- 	 struct layers <1> 
+ 	 struct layer <1> 
  	 { 
  	 	 static constexpr char name [] = "VK_LAYER_KHRONOS_validation"; 
  	 }; 
  	 template <> 
- 	 struct layers <2> 
+ 	 struct layer <2> 
  	 { 
  	 	 static constexpr char name [] = "VK_LAYER_LUNARG_device_simulation"; 
  	 }; 
  	 template <> 
- 	 struct layers <3> 
+ 	 struct layer <3> 
  	 { 
  	 	 static constexpr char name [] = "VK_LAYER_KHRONOS_synchronization2"; 
  	 }; 

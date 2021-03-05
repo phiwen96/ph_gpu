@@ -50,8 +50,8 @@ int main (int argc, const char * argv[])
     instance_header << "#include <iostream>\n\n";
     
     instance_header << "struct instance \n{\n";
-        instance_header << "\t\tstatic constexpr int extension_count = " << INSTANCE_EXTENSION_COUNT << ";\n";
-        instance_header << "\t\tstatic constexpr int layer_count = " << INSTANCE_LAYER_COUNT << ";\n";
+        instance_header << "\t\tstatic constexpr int extensionCount = " << INSTANCE_EXTENSION_COUNT << ";\n";
+        instance_header << "\t\tstatic constexpr int layerCount = " << INSTANCE_LAYER_COUNT << ";\n";
         instance_header << "\n";
     
         instance_header << "\t\ttemplate <int>\n";
@@ -61,7 +61,7 @@ int main (int argc, const char * argv[])
 //        instance_header << "\tstruct extensions \n\t{\n";
 //        instance_header << "\t};\n\n";
     
-        instance_header << "\tstruct layers \n\t{\n";
+        instance_header << "\tstruct layer \n\t{\n";
         instance_header << "\t};\n";
     
         instance_header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(INSTANCE_EXTENSION_COUNT, DECL_INSTANCE_EXTENSIONS, int x));
