@@ -47,7 +47,7 @@ int main (int argc, const char * argv[])
 {
     file <write> instance_header (argv [1]);
     instance_header << "#pragma once \n";
-    instance_header << "#include <iostream>\n\n";
+    instance_header << "#include <iostream>\n\n#include <const_str/const_str.hpp>\n\n";
     instance_header << "namespace " << PROJECT_NAME << " {\n\n";
     
     instance_header << "struct instance \n{\n";
