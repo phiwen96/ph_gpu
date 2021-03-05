@@ -1,5 +1,5 @@
 //#include <ph_gpu/ph_gpu.hpp>
-//#include <phulkan_generator/phulkan_generator.hpp>
+#include <phulkan_generator/gpu.hpp>
 #include "app_1.hpp"
 
 #include <iostream>

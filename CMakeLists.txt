@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.19.4)
 
 project (
-	ph_gpu 
+	phulkan_generator 
 	VERSION 1.0
 	DESCRIPTION "Very nice project"
 	LANGUAGES CXX)
@@ -27,7 +27,7 @@ endif()
 
 add_subdirectory(generators)
 
-add_library (ph_gpu ${SOURCE_LIST} ${HEADER_LIST})
+add_library (phulkan_generator ${SOURCE_LIST} ${HEADER_LIST})
 
 # add_custom_command (
 # 		# OUTPUT
@@ -36,7 +36,7 @@ add_library (ph_gpu ${SOURCE_LIST} ${HEADER_LIST})
 # 		PRE_BUILD
 # 		COMMAND $<TARGET_FILE:graphics_generator> ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/gpu.hpp)
 
-generate (ph_gpu ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/instance.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/gpu.hpp)
+generate (phulkan_generator ${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator/instance.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator/gpu.hpp)
 
 
 
@@ -50,8 +50,8 @@ generate (ph_gpu ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/instance.hpp ${CMAKE
 # PRE_BUILD
 # COMMAND $<TARGET_FILE:graphics_generator> ${CMAKE_CURRENT_BINARY_DIR}/generated/generated.hpp)
 
-target_include_directories (ph_gpu PUBLIC include)
-target_include_directories (ph_gpu PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories (phulkan_generator PUBLIC include)
+target_include_directories (phulkan_generator PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 
 
