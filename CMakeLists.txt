@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.19.4)
 
 project (
-	phulkan_generator 
+	phulkan_generator
 	VERSION 1.0
 	DESCRIPTION "Very nice project"
 	LANGUAGES CXX)
@@ -29,36 +29,15 @@ add_subdirectory(generators)
 
 add_library (phulkan_generator ${SOURCE_LIST} ${HEADER_LIST})
 
-# add_custom_command (
-# 		# OUTPUT
-# 		#  ${gpus_info_generator_BINARY_DIR}/generated/generated.hpp
-# 		TARGET ph_gpu
-# 		PRE_BUILD
-# 		COMMAND $<TARGET_FILE:graphics_generator> ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/gpu.hpp)
-
 generate (phulkan_generator ${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator/instance.hpp ${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator/gpu.hpp)
 
-
-
-# target_sources (ph_gpu PRIVATE ${SOURCE_LIST} ${HEADER_LIST})
-# target_sources (ph_gpu PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/ph_gpu/gpu.hpp)
-
-# add_custom_command (
-# # OUTPUT
-# #  ${gpus_info_generator_BINARY_DIR}/generated/gpus_info.hpp
-# TARGET ph_gpu
-# PRE_BUILD
-# COMMAND $<TARGET_FILE:graphics_generator> ${CMAKE_CURRENT_BINARY_DIR}/generated/generated.hpp)
 
 target_include_directories (phulkan_generator PUBLIC include)
 target_include_directories (phulkan_generator PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 
-
-
-# if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR MODERN_CMAKE_BUILD_TESTING) AND BUILD_TESTING)
-# 	add_subdirectory (tests)
-# endif()
-
-
 add_subdirectory(apps)
+
+
+
+# cmake -S . -B xbuild -GXcode && cmake --open xbuild
