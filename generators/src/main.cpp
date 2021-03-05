@@ -40,9 +40,8 @@ return res;\
 
 
 
-#define BB(x)
 
-#define AA(x) BOOST_PP_IF (string (BOOST_PP_STRINGIZE (x) == string ("hej"), BOOST_PP_IDENTITY (BOOST_PP_STRINGIZE (x)), BOOST_PP_EMPTY ())
+
 
 int main (int argc, const char * argv[])
 {
@@ -51,17 +50,26 @@ int main (int argc, const char * argv[])
     instance_header << "#include <iostream>\n\n";
     
     instance_header << "struct instance \n{\n";
-        instance_header << "\t\t static constexpr int extension_count = " << INSTANCE_EXTENSION_COUNT << ";\n";
-        instance_header << "\t\t static constexpr int layer_count = " << INSTANCE_LAYER_COUNT << ";\n";
+        instance_header << "\t\tstatic constexpr int extension_count = " << INSTANCE_EXTENSION_COUNT << ";\n";
+        instance_header << "\t\tstatic constexpr int layer_count = " << INSTANCE_LAYER_COUNT << ";\n";
         instance_header << "\n";
     
-        instance_header << "\tstruct extensions \n\t{\n";
-        instance_header << "\t};\n\n";
+        instance_header << "\t\ttemplate <int>\n";
+        instance_header << "\t\tstruct extension;\n\n";
+        instance_header << "\t\ttemplate <int>\n";
+        instance_header << "\t\tstruct layer;\n\n";
+//        instance_header << "\tstruct extensions \n\t{\n";
+//        instance_header << "\t};\n\n";
     
         instance_header << "\tstruct layers \n\t{\n";
         instance_header << "\t};\n";
     
+        instance_header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(INSTANCE_EXTENSION_COUNT, DECL_INSTANCE_EXTENSIONS, int x));
+        instance_header << BOOST_PP_STRINGIZE (BOOST_PP_REPEAT(INSTANCE_LAYER_COUNT, DECL_INSTANCE_LAYERS, int x));
+    
     instance_header << "};\n";
+    
+    
     
     file <write> gpu_header (argv [2]);
     gpu_header << "#pragma once \n";

@@ -87,7 +87,7 @@ void parse_instance_extensions (auto& gpu_file)
     
     for (int i = 0; auto const& instanceExtension : instanceExtensions)
     {
-        gpu_file << DEF (INSTANCE_EXTENSION_) << i << "_NAME " << instanceExtension.extensionName << "\n";
+        gpu_file << DEF (INSTANCE_EXTENSION_) << i << "_NAME \"" << instanceExtension.extensionName << "\"\n";
         
         ++i;
     }
@@ -100,7 +100,7 @@ void parse_instance_layers (auto& gpu_file)
     
     for (int i = 0; auto const& instanceLayer : instanceLayers)
     {
-        gpu_file << DEF (INSTANCE_LAYER_) << i << "_NAME " << instanceLayer.layerName << "\n";
+        gpu_file << DEF (INSTANCE_LAYER_) << i << "_NAME \"" << instanceLayer.layerName << "\"\n";
         
         ++i;
     }
