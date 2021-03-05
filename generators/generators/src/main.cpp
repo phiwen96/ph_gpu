@@ -2,6 +2,77 @@
 #define DEF(x) string("#define ") + string(BOOST_PP_STRINGIZE (x))
 #define PARSE_1(s) [](string str){str = regex_replace (str, regex ("(.*)(\\[)"), R"($1)");str = regex_replace (str, regex ("(.*)(\\])"), R"($1)");str = regex_replace (str, regex ("(.*)(\\.)"), R"()");str = regex_replace (str, regex ("([a-z])([A-Z])"), R"($1_$2)");str = regex_replace (str, regex ("([[:digit:]]+)"), R"(_$1)");for (auto & c: str) c = toupper(c);str.insert (0, "_"); return str;}(string (s))
 #define PARSE(x, ...) PARSE_1 (BOOST_PP_STRINGIZE (x)) __VA_ARGS__ x
+auto getInstance = [] () -> VkInstance {
+      VkApplicationInfo appInfo
+      {
+            .sType                  = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+            .pApplicationName       = "generator",
+            .applicationVersion     = VK_MAKE_VERSION (1, 0, 0),
+            .pEngineName            = "No Engine",
+            .engineVersion          = VK_MAKE_VERSION (1, 0, 0),
+            .apiVersion             = VK_API_VERSION_1_2
+      };
+      
+      
+      
+      VkInstance instance;
+      
+      VkInstanceCreateInfo createInfo
+      {
+            .sType                        = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+            .pApplicationInfo             = &appInfo,
+            .enabledExtensionCount        = 0,//glfwExtensionCount,
+            .ppEnabledExtensionNames      = nullptr,//glfwExtensions,
+            .enabledLayerCount            = 0
+      };
+      
+      
+      
+      
+      
+      if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS)
+      {
+            throw runtime_error ("failed to create instance");
+      }
+      return instance;
+};
+auto getInstanceExtensions = [] () -> vector<VkExtensionProperties> {
+      uint32_t extensionCount = 0;
+      vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+      vector<VkExtensionProperties> extensions (extensionCount);
+      vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
+      return extensions;
+};
+auto getInstanceValidationLayers = [] () -> vector<VkLayerProperties> {
+      uint32_t layerCount = 0;
+      vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+      vector<VkLayerProperties> availableLayers (layerCount);
+      vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+      return availableLayers;
+};
+auto getPhysicalDevices = [] (VkInstance& instance) -> vector<VkPhysicalDevice> {
+      uint32_t deviceCount = 0;
+      vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
+      vector<VkPhysicalDevice> devices (deviceCount);
+      vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
+      return devices;
+};
+auto getPhysicalDeviceProperties = [](VkPhysicalDevice const& physicalDevice) -> VkPhysicalDeviceProperties {
+      VkPhysicalDeviceProperties properties;
+      vkGetPhysicalDeviceProperties(physicalDevice, &properties);
+      return properties;
+};
+auto getPhysicalDeviceFeatures = [](VkPhysicalDevice const& physicalDevice) -> VkPhysicalDeviceFeatures {
+      VkPhysicalDeviceFeatures features;
+      vkGetPhysicalDeviceFeatures(physicalDevice, &features);
+      return features;
+};
+
+void parse_physical_device_properties (auto& file, VkPhysicalDevice const& phys)
+{
+      VkPhysicalDeviceProperties props = getPhysicalDeviceProperties (phys);
+}
+
 
 int main (int argc, const char * argv[])
 {
@@ -12,74 +83,13 @@ int main (int argc, const char * argv[])
 
       
       glfwInit();
-      auto instanceExtensions = []{
-            uint32_t extensionCount = 0;
-            vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-            vector<VkExtensionProperties> extensions (extensionCount);
-            vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
-            return extensions;
-      }();
-      auto instanceValidationLayers = []{
-            uint32_t layerCount = 0;
-            vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
-            vector<VkLayerProperties> availableLayers (layerCount);
-            vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
-            return availableLayers;
-      }();
-      auto instance = []{
-            VkApplicationInfo appInfo
-            {
-                  .sType                  = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-                  .pApplicationName       = "generator",
-                  .applicationVersion     = VK_MAKE_VERSION (1, 0, 0),
-                  .pEngineName            = "No Engine",
-                  .engineVersion          = VK_MAKE_VERSION (1, 0, 0),
-                  .apiVersion             = VK_API_VERSION_1_2
-            };
-            
-            
-            
-            VkInstance instance;
-            
-            VkInstanceCreateInfo createInfo
-            {
-                  .sType                        = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-                  .pApplicationInfo             = &appInfo,
-                  .enabledExtensionCount        = 0,//glfwExtensionCount,
-                  .ppEnabledExtensionNames      = nullptr,//glfwExtensions,
-                  .enabledLayerCount            = 0
-            };
-            
-            
-            
-            
-            
-            if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS)
-            {
-                  throw runtime_error ("failed to create instance");
-            }
-            return instance;
-      }();
-      auto physicalDevices = [&instance] {
-            uint32_t deviceCount = 0;
-            vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
-            vector<VkPhysicalDevice> devices (deviceCount);
-            vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
-            return devices;
-      }();
-//      output_file << "constexpr int GPU_COUNT = " << physicalDevices.size() << ";\n";
+      auto instanceExtensions = getInstanceExtensions ();
+      auto instanceValidationLayers = getInstanceValidationLayers ();
+      auto instance = getInstance ();
+      auto physicalDevices = getPhysicalDevices (instance);
       output_file << "#define GPU_COUNT " << physicalDevices.size() << "\n";
 
-      auto getPhysicalDeviceProperties = [](VkPhysicalDevice const& physicalDevice) {
-            VkPhysicalDeviceProperties properties;
-            vkGetPhysicalDeviceProperties(physicalDevice, &properties);
-            return properties;
-      };
-      auto getPhysicalDeviceFeatures = [](VkPhysicalDevice const& physicalDevice) {
-            VkPhysicalDeviceFeatures features;
-            vkGetPhysicalDeviceFeatures(physicalDevice, &features);
-            return features;
-      };
+      
       
       [&]{
             for (auto& i : instanceExtensions)
@@ -91,222 +101,240 @@ int main (int argc, const char * argv[])
                   cout << "\t" << i.layerName << endl;
       };
       
-      int nr_of_gpus = 0;
       
       
-      
-      
-      for (auto& i : physicalDevices)
+      for (int i = 0; auto& physicalDevice : physicalDevices)
       {
-            VkPhysicalDeviceProperties props = getPhysicalDeviceProperties (i);
-            VkPhysicalDeviceFeatures feats = getPhysicalDeviceFeatures (i);
+            
+            uint32_t queue_families_count = 0;
+            
+            vkGetPhysicalDeviceQueueFamilyProperties (physicalDevice, &queue_families_count, nullptr);
+            
+            output_file << DEF (GPU_) << i << "_QUEUE_FAMILIES_COUNT " << queue_families_count << " \n";
+
+            vector <VkQueueFamilyProperties> queueFamilies (queue_families_count);
+            for (auto const& queueFamily : queueFamilies)
+            {
+                  string graphics = string ("#define GPU_") + to_string (i) + string ("_QUEUE_FAMILY ") + to_string (queue_families_count) + string ("_GRAPHICS ");
+                  
+                  if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
+                  {
+                        output_file << DEF (GPU_)
+                                    << i << "_QUEUE_FAMILY "
+                                    << queue_families_count <<
+                                    "_GRAPHICS " << " \n";
+                  }
+            }
+            
+            VkPhysicalDeviceProperties props = getPhysicalDeviceProperties (physicalDevice);
+            VkPhysicalDeviceFeatures feats = getPhysicalDeviceFeatures (physicalDevice);
             VkPhysicalDeviceLimits limits = props.limits;
             
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.apiVersion, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.driverVersion, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.vendorID, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.deviceID, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.deviceName, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[0], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[1], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[2], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[3], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[4], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[5], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[6], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[7], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[8], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[9], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[10], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[11], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[12], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[13], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[14], << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (props.pipelineCacheUUID[15], << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (props.apiVersion, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (props.driverVersion, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (props.vendorID, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (props.deviceID, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (props.deviceName, << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[0], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[1], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[2], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[3], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[4], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[5], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[6], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[7], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[8], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[9], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[10], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[11], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[12], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[13], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[14], << " " <<) << " \n";
+//            output_file << DEF (GPU_) << i << PARSE (props.pipelineCacheUUID[15], << " " <<) << " \n";
             
-            output_file << DEF (GPU_) << nr_of_gpus << "_TYPE_DISCRETE " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << "_TYPE_INTEGRATED " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << "_TYPE_VIRTUAL " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << "_TYPE_CPU " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_CPU) << "\n";
-
-            output_file << "\n";
-            
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.robustBufferAccess, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.fullDrawIndexUint32, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.imageCubeArray, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.independentBlend, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.geometryShader, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.tessellationShader, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.sampleRateShading, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.dualSrcBlend, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.logicOp, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.multiDrawIndirect, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.drawIndirectFirstInstance, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.depthClamp, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.depthBiasClamp, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.fillModeNonSolid, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.depthBounds, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.wideLines, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.largePoints, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.alphaToOne, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.multiViewport, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.samplerAnisotropy, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.textureCompressionETC2, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.textureCompressionASTC_LDR, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.textureCompressionBC, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.occlusionQueryPrecise, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.pipelineStatisticsQuery, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.vertexPipelineStoresAndAtomics, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.fragmentStoresAndAtomics, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderTessellationAndGeometryPointSize, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderImageGatherExtended, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderStorageImageExtendedFormats, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderStorageImageMultisample, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderStorageImageReadWithoutFormat, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderStorageImageWriteWithoutFormat, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderUniformBufferArrayDynamicIndexing, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderSampledImageArrayDynamicIndexing, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderStorageBufferArrayDynamicIndexing, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderStorageImageArrayDynamicIndexing, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderClipDistance, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderCullDistance, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderFloat64, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderInt64, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderInt16, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderResourceResidency, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.shaderResourceMinLod, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.sparseBinding, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.sparseResidencyBuffer, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.sparseResidencyImage2D, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.sparseResidencyImage3D, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.sparseResidency2Samples, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.sparseResidency4Samples, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.sparseResidency8Samples, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.sparseResidency16Samples, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.sparseResidencyAliased, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.variableMultisampleRate, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (feats.inheritedQueries, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << "_TYPE_DISCRETE " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) << "\n";
+            output_file << DEF (GPU_) << i << "_TYPE_INTEGRATED " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU) << "\n";
+            output_file << DEF (GPU_) << i << "_TYPE_VIRTUAL " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU) << "\n";
+            output_file << DEF (GPU_) << i << "_TYPE_CPU " << (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_CPU) << "\n";
             
             output_file << "\n";
-
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxImageDimension1D, << " " <<) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxImageDimension2D, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDescriptorSetUniformBuffersDynamic, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDescriptorSetUniformBuffers, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageResources, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageDescriptorInputAttachments, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageDescriptorStorageImages, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageDescriptorSampledImages, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageDescriptorSamplers, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageDescriptorSamplers, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageDescriptorSamplers, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxBoundDescriptorSets, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.sparseAddressSpaceSize, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.bufferImageGranularity, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxSamplerAllocationCount, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPushConstantsSize, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxStorageBufferRange, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxUniformBufferRange, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTexelBufferElements, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxImageArrayLayers, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxImageDimensionCube, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxImageDimension3D, << " " << ) << " \n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDescriptorSetStorageBuffers, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDescriptorSetStorageBuffersDynamic, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDescriptorSetSampledImages, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDescriptorSetStorageImages, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDescriptorSetInputAttachments, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxVertexInputAttributes, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxVertexInputBindings, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxVertexInputAttributeOffset, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxVertexInputBindingStride, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxVertexOutputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationGenerationLevel, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationPatchSize, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationControlPerVertexInputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationControlPerVertexOutputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationControlPerPatchOutputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationControlTotalOutputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationEvaluationInputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTessellationEvaluationOutputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDescriptorSetSamplers, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageDescriptorStorageBuffers, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxPerStageDescriptorUniformBuffers, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxMemoryAllocationCount, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxGeometryShaderInvocations, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxGeometryInputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxGeometryOutputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxGeometryOutputVertices, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxGeometryTotalOutputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxFragmentInputComponents, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxFragmentOutputAttachments, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxFragmentDualSrcAttachments, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxFragmentCombinedOutputResources, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxComputeSharedMemorySize, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxComputeWorkGroupCount[0], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxComputeWorkGroupCount[1], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxComputeWorkGroupCount[2], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxComputeWorkGroupInvocations, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxComputeWorkGroupSize[0], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxComputeWorkGroupSize[1], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxComputeWorkGroupSize[2], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.subPixelPrecisionBits, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.subTexelPrecisionBits, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.mipmapPrecisionBits, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDrawIndexedIndexValue, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxDrawIndirectCount, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxSamplerLodBias, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxSamplerAnisotropy, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxViewports, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxViewportDimensions[0], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxViewportDimensions[1], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.viewportBoundsRange[0], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.viewportBoundsRange[1], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.viewportSubPixelBits, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.minMemoryMapAlignment, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.minTexelBufferOffsetAlignment, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.minUniformBufferOffsetAlignment, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.minStorageBufferOffsetAlignment, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.minTexelOffset, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTexelOffset, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.minTexelGatherOffset, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxTexelGatherOffset, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.minInterpolationOffset, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxInterpolationOffset, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.subPixelInterpolationOffsetBits, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxFramebufferWidth, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxFramebufferHeight, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxFramebufferLayers, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.framebufferColorSampleCounts, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.framebufferDepthSampleCounts, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.framebufferStencilSampleCounts, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.framebufferNoAttachmentsSampleCounts, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxColorAttachments, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.sampledImageColorSampleCounts, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.sampledImageIntegerSampleCounts, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.sampledImageDepthSampleCounts, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.sampledImageStencilSampleCounts, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.storageImageSampleCounts, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxSampleMaskWords, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.timestampComputeAndGraphics, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.timestampPeriod, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxClipDistances, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxCullDistances, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.maxCombinedClipAndCullDistances, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.discreteQueuePriorities, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.pointSizeRange[0], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.pointSizeRange[1], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.lineWidthRange[0], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.lineWidthRange[1], << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.pointSizeGranularity, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.lineWidthGranularity, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.strictLines, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.standardSampleLocations, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.optimalBufferCopyOffsetAlignment, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.optimalBufferCopyRowPitchAlignment, << " " <<) << "\n";
-            output_file << DEF (GPU_) << nr_of_gpus << PARSE (limits.nonCoherentAtomSize, << " " <<) << "\n";
             
-            ++nr_of_gpus;
+            output_file << DEF (GPU_) << i << PARSE (feats.robustBufferAccess, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.fullDrawIndexUint32, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.imageCubeArray, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.independentBlend, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.geometryShader, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.tessellationShader, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.sampleRateShading, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.dualSrcBlend, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.logicOp, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.multiDrawIndirect, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.drawIndirectFirstInstance, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.depthClamp, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.depthBiasClamp, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.fillModeNonSolid, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.depthBounds, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.wideLines, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.largePoints, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.alphaToOne, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.multiViewport, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.samplerAnisotropy, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.textureCompressionETC2, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.textureCompressionASTC_LDR, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.textureCompressionBC, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.occlusionQueryPrecise, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.pipelineStatisticsQuery, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.vertexPipelineStoresAndAtomics, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.fragmentStoresAndAtomics, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderTessellationAndGeometryPointSize, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderImageGatherExtended, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderStorageImageExtendedFormats, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderStorageImageMultisample, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderStorageImageReadWithoutFormat, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderStorageImageWriteWithoutFormat, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderUniformBufferArrayDynamicIndexing, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderSampledImageArrayDynamicIndexing, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderStorageBufferArrayDynamicIndexing, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderStorageImageArrayDynamicIndexing, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderClipDistance, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderCullDistance, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderFloat64, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderInt64, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderInt16, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderResourceResidency, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.shaderResourceMinLod, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.sparseBinding, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.sparseResidencyBuffer, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.sparseResidencyImage2D, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.sparseResidencyImage3D, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.sparseResidency2Samples, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.sparseResidency4Samples, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.sparseResidency8Samples, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.sparseResidency16Samples, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.sparseResidencyAliased, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.variableMultisampleRate, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (feats.inheritedQueries, << " " <<) << " \n";
+            
+            output_file << "\n";
+            
+            output_file << DEF (GPU_) << i << PARSE (limits.maxImageDimension1D, << " " <<) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxImageDimension2D, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxDescriptorSetUniformBuffersDynamic, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxDescriptorSetUniformBuffers, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxPerStageResources, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxPerStageDescriptorInputAttachments, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxPerStageDescriptorStorageImages, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxPerStageDescriptorSampledImages, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxPerStageDescriptorSamplers, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxPerStageDescriptorSamplers, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxPerStageDescriptorSamplers, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxBoundDescriptorSets, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.sparseAddressSpaceSize, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.bufferImageGranularity, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxSamplerAllocationCount, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxPushConstantsSize, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxStorageBufferRange, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxUniformBufferRange, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTexelBufferElements, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxImageArrayLayers, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxImageDimensionCube, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxImageDimension3D, << " " << ) << " \n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxDescriptorSetStorageBuffers, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxDescriptorSetStorageBuffersDynamic, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxDescriptorSetSampledImages, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxDescriptorSetStorageImages, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxDescriptorSetInputAttachments, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxVertexInputAttributes, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxVertexInputBindings, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxVertexInputAttributeOffset, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxVertexInputBindingStride, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxVertexOutputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTessellationGenerationLevel, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTessellationPatchSize, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTessellationControlPerVertexInputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTessellationControlPerVertexOutputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTessellationControlPerPatchOutputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTessellationControlTotalOutputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTessellationEvaluationInputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTessellationEvaluationOutputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxDescriptorSetSamplers, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxPerStageDescriptorStorageBuffers, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxPerStageDescriptorUniformBuffers, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxMemoryAllocationCount, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxGeometryShaderInvocations, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxGeometryInputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxGeometryOutputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxGeometryOutputVertices, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxGeometryTotalOutputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxFragmentInputComponents, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxFragmentOutputAttachments, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxFragmentDualSrcAttachments, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxFragmentCombinedOutputResources, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxComputeSharedMemorySize, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxComputeWorkGroupCount[0], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxComputeWorkGroupCount[1], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxComputeWorkGroupCount[2], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxComputeWorkGroupInvocations, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxComputeWorkGroupSize[0], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxComputeWorkGroupSize[1], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxComputeWorkGroupSize[2], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.subPixelPrecisionBits, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.subTexelPrecisionBits, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.mipmapPrecisionBits, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxDrawIndexedIndexValue, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxDrawIndirectCount, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxSamplerLodBias, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxSamplerAnisotropy, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxViewports, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxViewportDimensions[0], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxViewportDimensions[1], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.viewportBoundsRange[0], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.viewportBoundsRange[1], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.viewportSubPixelBits, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.minMemoryMapAlignment, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.minTexelBufferOffsetAlignment, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.minUniformBufferOffsetAlignment, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.minStorageBufferOffsetAlignment, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.minTexelOffset, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTexelOffset, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.minTexelGatherOffset, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxTexelGatherOffset, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.minInterpolationOffset, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxInterpolationOffset, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.subPixelInterpolationOffsetBits, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxFramebufferWidth, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxFramebufferHeight, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxFramebufferLayers, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.framebufferColorSampleCounts, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.framebufferDepthSampleCounts, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.framebufferStencilSampleCounts, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.framebufferNoAttachmentsSampleCounts, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxColorAttachments, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.sampledImageColorSampleCounts, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.sampledImageIntegerSampleCounts, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.sampledImageDepthSampleCounts, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.sampledImageStencilSampleCounts, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.storageImageSampleCounts, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxSampleMaskWords, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.timestampComputeAndGraphics, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.timestampPeriod, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxClipDistances, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxCullDistances, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.maxCombinedClipAndCullDistances, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.discreteQueuePriorities, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.pointSizeRange[0], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.pointSizeRange[1], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.lineWidthRange[0], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.lineWidthRange[1], << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.pointSizeGranularity, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.lineWidthGranularity, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.strictLines, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.standardSampleLocations, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.optimalBufferCopyOffsetAlignment, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.optimalBufferCopyRowPitchAlignment, << " " <<) << "\n";
+            output_file << DEF (GPU_) << i << PARSE (limits.nonCoherentAtomSize, << " " <<) << "\n";
+            
+            ++i;
       }
       
       vkDestroyInstance(instance, nullptr);
