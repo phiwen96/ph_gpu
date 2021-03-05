@@ -5,8 +5,10 @@ using namespace std;
 
 int main ()
 {
-      
-//      cout << GPU_COUNT << endl;
+    cout << gpu<0>::properties::limits::nonCoherentAtomSize << endl;
+      cout << GPU_COUNT << endl;
       cout << "hi" << endl;
       return 0;
 }
+
+
