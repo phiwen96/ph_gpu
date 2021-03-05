@@ -43,6 +43,7 @@
 #include <boost/preprocessor/control/if.hpp>
 #include <boost/preprocessor/facilities/empty.hpp>
 #include <boost/preprocessor/facilities/identity.hpp>
+#include <const_str/const_str.hpp>
 
 using namespace std;
 

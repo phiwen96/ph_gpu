@@ -1,6 +1,20 @@
 
 add_subdirectory (generators)
 
+include (FetchContent)
+
+FetchContent_Declare(const_str
+	GIT_REPOSITORY https://github.com/phiwen96/const_str.git
+	GIT_TAG main
+)
+
+FetchContent_GetProperties (const_str) 
+
+if(NOT const_str_POPULATED)
+	FetchContent_Populate (const_str)
+	add_subdirectory (${const_str_SOURCE_DIR} ${const_str_BINARY_DIR}) 
+endif()
+
 set (GENERATED_INSTANCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/include/instance.hpp")
 set (GENERATED_GPU_FILE "${CMAKE_CURRENT_SOURCE_DIR}/include/gpu.hpp")
 
@@ -36,6 +50,7 @@ target_compile_definitions (gpu_generate_class
 
 target_link_libraries(gpu_generate_class
 	PRIVATE 
+	const_str
 	${Boost_LIBRARIES}
 	${Vulkan_LIBRARIES}
 	glfw
@@ -43,6 +58,7 @@ target_link_libraries(gpu_generate_class
 
 target_include_directories(gpu_generate_class 
 	PRIVATE 
+	const_str
 	include
 	${Boost_INCLUDE_DIRS}
 	${Vulkan_INCLUDE_DIRS}

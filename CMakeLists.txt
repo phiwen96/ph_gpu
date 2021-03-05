@@ -7,6 +7,8 @@ project (
 	LANGUAGES CXX)
 
 
+
+
 file (GLOB_RECURSE HEADER_LIST include/*.hpp)
 file (GLOB SOURCE_LIST src/*.cpp)
 
@@ -22,7 +24,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	find_package(glm REQUIRED)
 
 	# include (CTest)
-	include (FetchContent)
+	
 endif()
 
 add_subdirectory(generators)
@@ -42,10 +44,10 @@ target_include_directories(phulkan_generator PRIVATE
     $<INSTALL_INTERFACE:include/phulkan_generator>
 )
 
-# target_include_directories(${LIBRARY_NAME} PUBLIC
-#     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#     $<INSTALL_INTERFACE:include>
-# )
+target_include_directories(phulkan_generator PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
 add_subdirectory(apps)
 
