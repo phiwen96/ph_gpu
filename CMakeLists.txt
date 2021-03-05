@@ -36,6 +36,17 @@ target_include_directories (phulkan_generator PUBLIC include)
 target_include_directories (phulkan_generator PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 
+
+target_include_directories(phulkan_generator PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/phulkan_generator>
+    $<INSTALL_INTERFACE:include/phulkan_generator>
+)
+
+# target_include_directories(${LIBRARY_NAME} PUBLIC
+#     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#     $<INSTALL_INTERFACE:include>
+# )
+
 add_subdirectory(apps)
 
 
