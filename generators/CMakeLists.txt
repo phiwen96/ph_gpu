@@ -11,7 +11,7 @@ file(GLOB_RECURSE SOURCE_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
 add_executable (gpu_generate_class ${SOURCE_LIST} ${HEADER_LIST})
 
-set_target_properties(gpu_generate_class PROPERTIES FOLDER "ph_gpu/Generators")
+set_target_properties(gpu_generate_class PROPERTIES FOLDER "phulkan_generator/Generators")
 
 
 generate (gpu_generate_class 

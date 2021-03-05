@@ -6,6 +6,6 @@ add_executable (app_2)
 
 target_sources(app_2 PRIVATE ${SOURCE_LIST} ${HEADER_LIST})
 
-target_link_libraries (app_2 PRIVATE ph_gpu)
-target_include_directories (app_2 PRIVATE include ph_gpu)
+target_link_libraries (app_2 PRIVATE phulkan_generator)
+target_include_directories (app_2 PRIVATE include phulkan_generator)
 
