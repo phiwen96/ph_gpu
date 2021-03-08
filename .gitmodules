@@ -4,3 +4,6 @@
 [submodule "dependencies/Phan"]
 	path = dependencies/Phan
 	url = https://github.com/phiwen96/Phan.git
+[submodule "dependencies/phake"]
+	path = dependencies/phake
+	url = https://github.com/phiwen96/phake.git
