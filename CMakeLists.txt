@@ -18,7 +18,7 @@ add_subdirectory (cmake/phake)
 
 
 add_subdirectory (dependencies/const_str)
-add_subdirectory (dependencies/Phan)
+
 
 
 
