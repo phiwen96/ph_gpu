@@ -4,6 +4,9 @@
 [submodule "dependencies/Phan"]
 	path = dependencies/Phan
 	url = https://github.com/phiwen96/Phan.git
-[submodule "dependencies/phake"]
-	path = dependencies/phake
+[submodule "phake"]
+	path = phake
+	url = https://github.com/phiwen96/phake.git
+[submodule "cmake/phake"]
+	path = cmake/phake
 	url = https://github.com/phiwen96/phake.git
