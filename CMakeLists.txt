@@ -8,6 +8,7 @@ project (
 )
 
 add_subdirectory (dependencies/phake)
+ph_git ()
 add_subdirectory (dependencies/const_str)
 add_subdirectory (dependencies/Phan)
 
