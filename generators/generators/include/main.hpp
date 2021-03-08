@@ -6,7 +6,7 @@
 #include <regex>
 //#include <vulkan/vulkan.h>
 #define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
+//#include <GLFW/glfw3.h>
 #include <fstream>
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <boost/preprocessor/variadic/to_seq.hpp>

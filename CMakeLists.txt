@@ -1,5 +1,7 @@
 cmake_minimum_required (VERSION 3.19.4)
 
+
+
 project (
 	phulkan_generator
 	VERSION 1.0
@@ -8,7 +10,13 @@ project (
 )
 
 add_subdirectory (dependencies/phake)
+<<<<<<< HEAD
 ph_git ()
+=======
+# ph_git ()
+
+
+>>>>>>> fdb7e38edc921ab15e1e6ca26cb4e0a758910d68
 add_subdirectory (dependencies/const_str)
 add_subdirectory (dependencies/Phan)
 
