@@ -7,6 +7,7 @@ project (
 	LANGUAGES CXX
 )
 
+add_subdirectory (dependencies/phake)
 add_subdirectory (dependencies/const_str)
 add_subdirectory (dependencies/Phan)
 
